@@ -98,7 +98,7 @@
 
         /* Page Content */
         .page {
-            display: none;
+            /* display: none; */
             min-height: 100vh;
             padding-top: 80px;
         }
