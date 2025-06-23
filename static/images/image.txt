@@ -1,0 +1,1 @@
+Store all the images in this folder as <chipsName>.jpg
