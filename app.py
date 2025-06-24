@@ -19,7 +19,7 @@ def contact():
     return render_template("contact.html",title="contact")
 
 
-@app.route("/favourites")
+@app.route("/favourites") 
 def favourites():
     return render_template("favourites.html",title="favourites")
 
