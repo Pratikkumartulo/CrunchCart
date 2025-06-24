@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="static/css/signup.css">
+
+<div class="signup-container">
+    <h2 class="title">Join CrunchCart!</h2>
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.username.label }}<br>
+            {{ form.username(placeholder='Choose a username') }}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}<br>
+            {{ form.email(size=32, placeholder='Enter your email') }}
+        </div>
+
+        <div class="form-group">
+            {{ form.gender.label }}<br>
+            {{ form.gender }}
+        </div>
+
+        <div class="form-group">
+            {{ form.dob.label }}<br>
+            {{ form.dob(size=32, placeholder='DD/MM/YYYY') }}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label }}<br>
+            {{ form.password(size=32, placeholder='Create a password') }}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirm_password.label }}<br>
+            {{ form.confirm_password(size=32, placeholder='Confirm your password') }}
+        </div>
+
+        <button type="submit" class="btn-signup">Sign Up</button>
+
+        <div class="bottom-text">
+            Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

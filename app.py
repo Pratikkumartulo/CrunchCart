@@ -1,6 +1,8 @@
-from flask import Flask,render_template,url_for
+from flask import Flask, flash, render_template, redirect, url_for
+from forms import SignupForm, LoginForm
 
-app = Flask (__name__)
+app = Flask(__name__)
+app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
 
 @app.route("/")
 @app.route("/home")
@@ -24,6 +26,23 @@ def favourites():
 @app.route("/products")
 def products():
     return render_template("products.html",title="products")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash('Login successfull!')
+        return redirect(url_for('home'))
+    return render_template('login.html', title="Login", form=form)
+
+@app.route("/signup", methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        flash(f'Signup successful! Welcome {form.username.data}!')
+        return redirect(url_for('home'))
+    return render_template('signup.html', title="Signup", form=form)
+
 
 
 if __name__ == "__main__":

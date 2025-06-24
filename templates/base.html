@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrunchCart - Premium Chips & Snacks</title>
+    <title>CrunchCart - {{title}}</title>
     <link href="../static/css/style.css" rel="stylesheet">
     </head>
 <body>
+    {% if title!= "Login" and title!="Signup" %}
      <nav class="navbar">
         <div class="nav-container">
             <div class="logo">CrunchCart</div>
@@ -22,7 +23,8 @@
                 <span class="cart-count" id="cartCount">0</span>
             </div>
         </div>
-    </nav> 
+    </nav>
+    {% endif %}
     {% block content %}
 
     {% endblock content %}

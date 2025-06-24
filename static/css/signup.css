@@ -1,0 +1,122 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff6f61, #ffcc70);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.signup-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 960px;
+    width: 100%;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #ff6f61;
+    font-size: 2rem;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.form-group {
+    flex: 1 1 48%;
+    text-align: left;
+    /* display: flex; */
+    flex-direction: column;
+}
+
+label {
+    /* margin-bottom: 5px; */
+    font-weight: 500;
+}
+
+input,
+select {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    transition: 0.3s ease;
+    width: 100%;
+}
+
+input:focus,
+select:focus {
+    border-color: #ff6f61;
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 111, 97, 0.3);
+}
+
+.btn-signup {
+    background: linear-gradient(90deg, #ff6f61, #ffb347);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-signup:hover {
+    background: linear-gradient(90deg, #ff4f4f, #ffaa00);
+}
+
+.bottom-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+}
+
+.bottom-text a {
+    color: #ff6f61;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.bottom-text a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        flex: 1 1 100%;
+    }
+
+    .title {
+        margin-top: 50px;
+    }
+
+    .signup-container {
+        border-radius: 0;
+    }
+
+}
