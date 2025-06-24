@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ chip.name }} - Product Detail</title>
+    <style>
+        body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f6f6f6;
+    margin: 0;
+    padding: 0;
+}
+
+.product-page {
+    display: flex;
+    padding: 40px;
+    background: #fff;
+    max-width: 1000px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.product-image img {
+    width: 350px;
+    border-radius: 10px;
+}
+
+.product-info {
+    margin-left: 40px;
+    flex: 1;
+}
+
+.product-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.ratings {
+    font-size: 16px;
+    color: #2ecc71;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 26px;
+    color: #e53935;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.old-price {
+    font-size: 18px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 10px;
+}
+
+.discount {
+    font-size: 16px;
+    color: #388e3c;
+    margin-left: 10px;
+}
+
+.offers {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    color: #555;
+}
+
+.offers li {
+    margin-bottom: 8px;
+}
+
+.buy-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.add-cart, .buy-now {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-cart {
+    background-color: #ff9f00;
+    color: white;
+}
+
+.buy-now {
+    background-color: #fb641b;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+    <div class="product-page">
+        <div class="product-image">
+            <img src="{{ chip.image_url }}">
+        </div>
+        <div class="product-info">
+            <h1>{{ chip.name }}</h1>
+            <div class="ratings">⭐⭐⭐⭐☆ 4.2 (10,000+ reviews)</div>
+            <p class="price">₹{{ chip.price }} <span class="old-price">₹{{ "%.0f"|format(chip.price * 1.7) }}</span> <span class="discount">({{ "%.0f"|format(100 - (chip.price / (chip.price * 1.7)) * 100) }}% OFF)</span></p>
+            <ul class="offers">
+                <li>Bank Offer: 5% off with select credit cards</li>
+                <li>Extra ₹100 off on first purchase</li>
+                <li>Free shipping for members</li>
+            </ul>
+            <div class="buy-options">
+                <button class="add-cart">🛒 Add to Cart</button>
+                <button class="buy-now">⚡ Buy Now</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from flask import Flask, flash, render_template, redirect, url_for
 from forms import SignupForm, LoginForm
+from chips import chipsData
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
@@ -7,7 +8,7 @@ app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html",title="Home")
+    return render_template("home.html",title="Home",chips = chipsData)
 
 @app.route("/about")
 def about():
@@ -25,7 +26,7 @@ def favourites():
 
 @app.route("/products")
 def products():
-    return render_template("products.html",title="products")
+    return render_template("products.html",title="products",chips = chipsData)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
