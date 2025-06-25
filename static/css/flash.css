@@ -1,0 +1,72 @@
+.flash-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    transform: translateY(100%);
+    background: #fff;
+    color: #333;
+    padding: 15px 25px;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    min-width: 300px;
+    text-align: center;
+    border-left: 4px solid #007bff;
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.flash-message.success {
+    border-left-color: #28a745;
+    background: #d4edda;
+    color: #155724;
+}
+
+.flash-message.error {
+    border-left-color: #dc3545;
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.flash-message.warning {
+    border-left-color: #ffc107;
+    background: #fff3cd;
+    color: #856404;
+}
+
+.flash-message.info {
+    border-left-color: #17a2b8;
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+    }
+}
+
+.flash-message.hide {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+    to {
+        transform: translateY(100%);
+    }
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    float: right;
+    margin-left: 10px;
+    opacity: 0.7;
+}
+
+.close-btn:hover {
+    opacity: 1;
+}

@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CrunchCart - {{title}}</title>
     <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/css/flash.css" rel="stylesheet">
     </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <!-- <div class="flash-container" id="flashContainer">
+            {{ category }} , {{ message }}
+        </div> -->
+        <div class="flash-message {{ category }}" id="flashMsg">
+        <button class="close-btn" onclick="hideFlash()">&times;</button>
+         {{ message }}
+    </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    
     {% if title!= "Login" and title!="Signup" %}
      <nav class="navbar">
         <div class="nav-container">
@@ -28,4 +43,5 @@
     {% block content %}
 
     {% endblock content %}
+    <script src="../static/js/script.js"></script>
 </body>

@@ -1,6 +1,7 @@
-from flask import Flask, flash, render_template, redirect, url_for
+from flask import Flask, flash, render_template, redirect, url_for,flash
 from forms import SignupForm, LoginForm
 from chips import chipsData,findMaxThreeDiscount
+from users import user_data,addUser,validateUser
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
@@ -33,16 +34,26 @@ def products():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        flash('Login successfull!')
-        return redirect(url_for('home'))
+        if validateUser(form.email.data,form.password.data):
+            flash('Login successfull!','success')
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid email or password','error')
+
     return render_template('login.html', title="Login", form=form)
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
-        flash(f'Signup successful! Welcome {form.username.data}!')
-        return redirect(url_for('home'))
+        if addUser(form.username.data,form.email.data,form.gender.data,form.dob.data,form.password.data):
+            flash(f'Signup successful! Welcome {form.username.data}!','success')
+            return redirect(url_for('home'))
+        else:
+            flash(f'Email already exists !!','error')
+    else:
+        flash(f'Some error occured !!','error')
+
     return render_template('signup.html', title="Signup", form=form)
 
 @app.route("/product/<id>")
