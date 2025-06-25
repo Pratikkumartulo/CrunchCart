@@ -1,6 +1,6 @@
 from flask import Flask, flash, render_template, redirect, url_for
 from forms import SignupForm, LoginForm
-from chips import chipsData
+from chips import chipsData,findMaxThreeDiscount
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
@@ -8,7 +8,8 @@ app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html",title="Home",chips = chipsData)
+    discounted = findMaxThreeDiscount(chipsData)
+    return render_template("home.html",title="Home",chips = discounted)
 
 @app.route("/about")
 def about():
@@ -43,6 +44,15 @@ def signup():
         flash(f'Signup successful! Welcome {form.username.data}!')
         return redirect(url_for('home'))
     return render_template('signup.html', title="Signup", form=form)
+
+@app.route("/product/<id>")
+def ProductDetail(id):
+    print(f"The chip id is {type(id)}")
+    chip = chipsData.get(int(id))
+    print(chip)
+    if not chip:
+        return redirect(url_for('products'))
+    return render_template('product_detail.html',title=f"CrunchCart - {chip['name']}",chipDet = chip)
 
 
 

@@ -44,12 +44,16 @@
         </section>
     </div>
 <div class="products-container">
-    {% for chip in chips.values() %}
+    {% for chip in chips %}
     <div class="product-box">
+        <div class="tag">{{chip.discount}}%</div>
         <img src="../static/images/{{chip.image_url}}">
         <h2>{{ chip.name }}</h2>
-        <p class="price">₹{{ chip.price }}</p>
-        <button class="view-btn">View Details</button>
+        <div class="pricetag">
+            <p class="discounted">₹{{ chip.price }}</p>
+            <p class="price">₹{{ chip.price - (chip.price * chip.discount / 100) }}</p>
+        </div>
+        <a href="{{url_for('ProductDetail',id=chip.id)}}"><button class="view-btn">View Details</button></a>
     </div>
     {% endfor %}
 </div>
