@@ -23,7 +23,7 @@ def contact():
 
 @app.route("/favourites") 
 def favourites():
-    return render_template("favourites.html",title="favourites")
+    return render_template("favourites.html",title="favourites",chipsData = chipsData)
 
 
 @app.route("/products")
