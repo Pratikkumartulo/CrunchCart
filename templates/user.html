@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .user-profile {
+        max-width: 800px;
+        margin: 150px auto 60px;
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-profile h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #ff6f00;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-box {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .info-box span.label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .info-box span.value {
+        color: #333;
+    }
+
+    .user-actions {
+        margin-top: 30px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .user-actions a {
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: bold;
+        background-color: #ff6f00;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: background 0.3s ease;
+    }
+
+    .user-actions a:hover {
+        background-color: #e65100;
+    }
+
+    @media (max-width: 768px) {
+        .user-profile {
+            margin: 120px 20px 40px;
+            padding: 20px;
+        }
+
+        .info-box {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-actions {
+            flex-direction: column;
+        }
+
+        .user-actions a {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="user-profile">
+    <h1>User Profile</h1>
+    <div class="user-info">
+        <div class="info-box">
+            <span class="label">Username:</span>
+            <span class="value">{{ user['username'] }}</span>
+        </div>
+        <div class="info-box">
+            <span class="label">Email:</span>
+            <span class="value">{{ user['email'] }}</span>
+        </div>
+        <div class="info-box">
+            <span class="label">Gender:</span>
+            <span class="value">{{ user['gender'] }}</span>
+        </div>
+        <div class="info-box">
+            <span class="label">Date of Birth:</span>
+            <span class="value">{{ user['dob'] }}</span>
+        </div>
+    </div>
+
+    <div class="user-actions">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+{% endblock %}
