@@ -1,3 +1,4 @@
+from flask import session
 user_data = {}
 
 def addUser(username,email,gender,dob,password):
@@ -17,3 +18,18 @@ def validateUser(email,password):
         return True
     else:
         return False
+    
+def addSession(email):
+    session['email'] = email
+
+def isLoggedIn():
+    if 'email' in session and session['email'] in user_data:
+        Curruser = {k: v for k, v in user_data[session['email']].items() if k != 'password'}
+        Curruser['email'] = session['email']
+        return Curruser
+    else:
+        return None
+    
+def logoutUser():
+    session.pop('email', None)
+    return True

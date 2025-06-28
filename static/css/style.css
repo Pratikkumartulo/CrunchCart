@@ -11,6 +11,31 @@ body {
     overflow-x: hidden;
 }
 
+/* Apply to entire page or specific scrollable container */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ffe0b2;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ff9800;
+    border-radius: 10px;
+    border: 2px solid #ffe0b2;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #e65100;
+}
+
+
 /* Navigation */
 .navbar {
     position: fixed;
@@ -25,13 +50,33 @@ body {
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 20px;
 }
+
+.user-small {
+    display: none;
+}
+
+.user-large {
+    display: block;
+}
+
+/* Show .user-small and hide .user-large on small screens */
+@media (max-width: 768px) {
+    .user-small {
+        display: block;
+    }
+
+    .user-large {
+        display: none;
+    }
+}
+
 
 .logo {
     font-size: 2rem;
@@ -76,9 +121,44 @@ body {
     width: 100%;
 }
 
-.cart-icon {
-    position: relative;
+.hamburger {
+    display: none;
+    font-size: 1.8rem;
     cursor: pointer;
+    user-select: none;
+    margin-left: auto;
+    /* ✅ ensures it's pushed to the right */
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background: white;
+        width: 100%;
+        padding: 1rem 2rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .cart-icon {
+        margin-left: auto;
+    }
+}
+
+.cart-icon {
+    margin-left: 10px;
 }
 
 .cart-count {
@@ -389,6 +469,7 @@ body {
     max-width: 600px;
     margin: 0 auto;
 }
+
 .products-container {
     display: flex;
     flex-wrap: wrap;
@@ -411,6 +492,7 @@ body {
 .product-box:hover {
     transform: translateY(-5px);
 }
+
 .product-box .tag {
     position: absolute;
     top: 10px;
@@ -426,7 +508,7 @@ body {
     border-radius: 4px;
 }
 
-.product-box .pricetag{
+.product-box .pricetag {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -447,6 +529,7 @@ body {
     margin: 12px 0 4px;
     color: #222;
 }
+
 .product-box .discounted {
     font-size: 12px;
     color: red;

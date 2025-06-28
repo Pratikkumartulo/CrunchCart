@@ -7,42 +7,10 @@ function hideFlash() {
     }, 300);
 }
 
-// const chipsContainer = document.getElementById('chipsContainer');
-// let isDown = false, startX, scrollLeft;
-
-// chipsContainer.addEventListener('wheel', e => {
-//     e.preventDefault();
-//     chipsContainer.scrollLeft += e.deltaY;
-// });
-
-// chipsContainer.addEventListener('mousedown', e => {
-//     isDown = true;
-//     chipsContainer.classList.add('active');
-//     startX = e.pageX - chipsContainer.offsetLeft;
-//     scrollLeft = chipsContainer.scrollLeft;
-// });
-
-// chipsContainer.addEventListener('mouseleave', () => isDown = false);
-// chipsContainer.addEventListener('mouseup', () => isDown = false);
-
-// chipsContainer.addEventListener('mousemove', e => {
-//     if (!isDown) return;
-//     e.preventDefault();
-//     const x = e.pageX - chipsContainer.offsetLeft;
-//     const walk = (x - startX) * 2;
-//     chipsContainer.scrollLeft = scrollLeft - walk;
-// });
-
-// chipsContainer.addEventListener('touchstart', e => {
-//     startX = e.touches[0].pageX - chipsContainer.offsetLeft;
-//     scrollLeft = chipsContainer.scrollLeft;
-// });
-
-// chipsContainer.addEventListener('touchmove', e => {
-//     const x = e.touches[0].pageX - chipsContainer.offsetLeft;
-//     const walk = (x - startX) * 1.5;
-//     chipsContainer.scrollLeft = scrollLeft - walk;
-// });
+function toggleMobileNav() {
+    const navLinks = document.getElementById("navLinks");
+    navLinks.classList.toggle("show");
+}
 
 window.addEventListener("DOMContentLoaded", () => {
     const chipsContainer = document.getElementById('chipsContainer');
