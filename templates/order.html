@@ -1,335 +1,182 @@
 {% extends "base.html" %}
-
 {% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
-<div class="container">
-        <!-- Order Header -->
+<style>
+    body {
+        background-color: #fff;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .order-container {
+        padding: 100px 20px;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 143, 65, 0.1)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255, 255, 255, 0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255, 255, 255, 0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255, 255, 255, 0.1)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255, 255, 255, 0.1)"/><circle cx="10" cy="70" r="1.5" fill="rgba(255, 255, 255, 0.1)"/></svg>') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .order-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .order-header {
+        background: #ff6b35;
+        padding: 30px;
+        border-radius: 16px 16px 0 0;
+        color: white;
+    }
+
+    .order-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .order-header p {
+        font-size: 1.2rem;
+    }
+
+    .form-section {
+        background: rgba(240, 240, 240, 0.85);
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .form-section-title {
+        font-size: 1.5rem;
+        color: #ff6b35;
+        margin-bottom: 15px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        text-align: left;
+    }
+
+    .form-control {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 100%;
+        margin-bottom: 15px;
+        transition: border 0.3s;
+    }
+
+    .form-control:focus {
+        border: 1px solid #ff6b35;
+        outline: none;
+        background: #fff;
+    }
+
+    .place-order-btn {
+        background: #ff6b35;
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: all 0.3s;
+    }
+
+    .place-order-btn:hover {
+        background: #f7941d;
+        transform: translateY(-2px);
+    }
+
+    .security-badge {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid rgba(40, 167, 69, 0.1);
+        border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .order-header h1 {
+            font-size: 2rem;
+        }
+        
+        .form-section-title {
+            font-size: 1.3rem;
+        }
+
+        .place-order-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="order-container">
+    <div class="order-wrapper">
         <div class="order-header">
-            <h1><i class="fas fa-shopping-cart"></i> Secure Checkout</h1>
+            <h1>Secure Checkout</h1>
             <p>Complete your order and get your favorite chips delivered fresh to your door!</p>
         </div>
 
-        <!-- Success/Error Messages -->
-        <div class="success-message" id="successMessage">
-            <i class="fas fa-check-circle"></i>
-            <span id="successText"></span>
-        </div>
+        <div class="order-form">
+            <form method="POST" action="{{ url_for('order') }}">
+                {{ form.hidden_tag() }}
 
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span id="errorText"></span>
-        </div>
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-user"></i>
+                        Contact Information
+                    </h4>
+                    <label class="form-label">{{ form.email.label() }}</label>
+                    {{ form.email(class="form-control", placeholder="your@email.com") }}
 
-        <!-- Loading Spinner -->
-        <div class="loading" id="loading">
-            <i class="fas fa-spinner"></i>
-            <p>Processing your order...</p>
-        </div>
-
-        <!-- Main Order Content -->
-        <div class="order-content">
-            <!-- Left Side - Order Form -->
-            <div class="order-form">
-                <form id="orderForm">
-                    <!-- Customer Information Section -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-user"></i> Customer Information</h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="email">Email Address *</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number *</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Delivery Address Section -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-map-marker-alt"></i> Delivery Address</h3>
-                        <div class="form-group">
-                            <label for="address">Street Address *</label>
-                            <input type="text" id="address" name="address" required 
-                                   placeholder="e.g., 123 Main Street, Apt 4B">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="city">City *</label>
-                                <input type="text" id="city" name="city" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="state">State *</label>
-                                <select id="state" name="state" required>
-                                    <option value="">Select State</option>
-                                    <option value="AL">Alabama</option>
-                                    <option value="CA">California</option>
-                                    <option value="FL">Florida</option>
-                                    <option value="NY">New York</option>
-                                    <option value="TX">Texas</option>
-                                    <!-- Add more states as needed -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="zipcode">ZIP Code *</label>
-                                <input type="text" id="zipcode" name="zipcode" required 
-                                       pattern="[0-9]{5}(-[0-9]{4})?" placeholder="12345">
-                            </div>
-                            <div class="form-group">
-                                <label for="country">Country *</label>
-                                <select id="country" name="country" required>
-                                    <option value="US">United States</option>
-                                    <option value="CA">Canada</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="instructions">Delivery Instructions (Optional)</label>
-                            <textarea id="instructions" name="instructions" rows="3" 
-                                      placeholder="e.g., Leave at front door, Ring doorbell, Apartment entrance code, etc."></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Delivery Time Section -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-clock"></i> Delivery Time</h3>
-                        <div class="delivery-options">
-                            <div class="delivery-option">
-                                <input type="radio" id="asap" name="deliveryTime" value="asap" checked>
-                                <label for="asap">
-                                    <i class="fas fa-bolt"></i>
-                                    <div>
-                                        <strong>ASAP</strong>
-                                        <span>30-45 minutes</span>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="delivery-option">
-                                <input type="radio" id="scheduled" name="deliveryTime" value="scheduled">
-                                <label for="scheduled">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <div>
-                                        <strong>Schedule</strong>
-                                        <span>Choose your time</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div id="scheduleTime" class="schedule-time" style="display: none;">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="deliveryDate">Delivery Date</label>
-                                    <input type="date" id="deliveryDate" name="deliveryDate">
-                                </div>
-                                <div class="form-group">
-                                    <label for="deliveryTimeSlot">Time Slot</label>
-                                    <select id="deliveryTimeSlot" name="deliveryTimeSlot">
-                                        <option value="">Select Time</option>
-                                        <option value="10:00-11:00">10:00 AM - 11:00 AM</option>
-                                        <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
-                                        <option value="12:00-13:00">12:00 PM - 1:00 PM</option>
-                                        <option value="13:00-14:00">1:00 PM - 2:00 PM</option>
-                                        <option value="14:00-15:00">2:00 PM - 3:00 PM</option>
-                                        <option value="15:00-16:00">3:00 PM - 4:00 PM</option>
-                                        <option value="16:00-17:00">4:00 PM - 5:00 PM</option>
-                                        <option value="17:00-18:00">5:00 PM - 6:00 PM</option>
-                                        <option value="18:00-19:00">6:00 PM - 7:00 PM</option>
-                                        <option value="19:00-20:00">7:00 PM - 8:00 PM</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment Method Section -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
-                        <div class="payment-methods">
-                            <div class="payment-option">
-                                <input type="radio" id="card" name="payment" value="card" checked>
-                                <label for="card">
-                                    <i class="fas fa-credit-card"></i>
-                                    <div>
-                                        <strong>Credit/Debit Card</strong>
-                                        <span>Visa, MasterCard, Amex</span>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="payment-option">
-                                <input type="radio" id="paypal" name="payment" value="paypal">
-                                <label for="paypal">
-                                    <i class="fab fa-paypal"></i>
-                                    <div>
-                                        <strong>PayPal</strong>
-                                        <span>Pay with your PayPal account</span>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="payment-option">
-                                <input type="radio" id="applepay" name="payment" value="applepay">
-                                <label for="applepay">
-                                    <i class="fab fa-apple-pay"></i>
-                                    <div>
-                                        <strong>Apple Pay</strong>
-                                        <span>Touch ID or Face ID</span>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="payment-option">
-                                <input type="radio" id="cash" name="payment" value="cash">
-                                <label for="cash">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    <div>
-                                        <strong>Cash on Delivery</strong>
-                                        <span>Pay when you receive</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Card Details (shown when card is selected) -->
-                        <div id="cardDetails" class="card-details">
-                            <div class="form-group">
-                                <label for="cardNumber">Card Number *</label>
-                                <input type="text" id="cardNumber" name="cardNumber" 
-                                       placeholder="1234 5678 9012 3456" maxlength="19">
-                                <div class="card-icons">
-                                    <i class="fab fa-cc-visa"></i>
-                                    <i class="fab fa-cc-mastercard"></i>
-                                    <i class="fab fa-cc-amex"></i>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="expiry">Expiry Date *</label>
-                                    <input type="text" id="expiry" name="expiry" 
-                                           placeholder="MM/YY" maxlength="5">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cvv">CVV *</label>
-                                    <input type="text" id="cvv" name="cvv" 
-                                           placeholder="123" maxlength="4">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cardName">Name on Card *</label>
-                                <input type="text" id="cardName" name="cardName" 
-                                       placeholder="John Doe">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Order Notes Section -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-sticky-note"></i> Order Notes (Optional)</h3>
-                        <div class="form-group">
-                            <textarea id="orderNotes" name="orderNotes" rows="3" 
-                                      placeholder="Any special requests or notes for your order..."></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Right Side - Order Summary -->
-            <div class="order-summary">
-                <h3><i class="fas fa-receipt"></i> Order Summary</h3>
-                
-                <!-- Cart Items -->
-                <div id="cartItems" class="cart-items">
-                    {% for item in cart_items %}
-                    <div class="cart-item" data-product-id="{{ item.product.id }}">
-                        <div class="item-image">
-                            <i class="fas fa-cookie-bite"></i>
-                        </div>
-                        <div class="item-info">
-                            <div class="item-name">{{ item.product.name }}</div>
-                            <div class="item-price">${{ "%.2f"|format(item.product.price) }} each</div>
-                            <div class="item-quantity">
-                                <button type="button" class="quantity-btn" onclick="updateQuantity({{ item.product.id }}, -1)">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <span class="quantity">{{ item.quantity }}</span>
-                                <button type="button" class="quantity-btn" onclick="updateQuantity({{ item.product.id }}, 1)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-total">
-                            <div class="total-price">${{ "%.2f"|format(item.total) }}</div>
-                            <button type="button" class="remove-item" onclick="removeItem({{ item.product.id }})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    {% endfor %}
+                    <label class="form-label">{{ form.contact.label() }}</label>
+                    {{ form.contact(class="form-control", placeholder="+1 (555) 123-4567") }}
                 </div>
 
-                <!-- Promo Code Section -->
-                <div class="promo-section">
-                    <div class="promo-input">
-                        <input type="text" id="promoCode" placeholder="Enter promo code">
-                        <button type="button" onclick="applyPromo()">Apply</button>
-                    </div>
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Delivery Address
+                    </h4>
+                    <label class="form-label">{{ form.street.label() }}</label>
+                    {{ form.street(class="form-control", placeholder="123 Main Street, Apt 4B") }}
+
+                    <label class="form-label">{{ form.city.label() }}</label>
+                    {{ form.city(class="form-control", placeholder="New York") }}
+
+                    <label class="form-label">{{ form.state.label() }}</label>
+                    {{ form.state(class="form-control", placeholder="NY") }}
+
+                    <label class="form-label">{{ form.zip_code.label() }}</label>
+                    {{ form.zip_code(class="form-control", placeholder="10001") }}
                 </div>
 
-                <!-- Order Totals -->
-                <div class="order-totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">${{ "%.2f"|format(subtotal) }}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Delivery Fee:</span>
-                        <span id="delivery">
-                            {% if delivery_charge == 0 %}
-                                <span class="free">FREE</span>
-                            {% else %}
-                                ${{ "%.2f"|format(delivery_charge) }}
-                            {% endif %}
-                        </span>
-                    </div>
-                    <div class="total-row" id="promoRow" style="display: none;">
-                        <span>Promo Discount:</span>
-                        <span id="promoDiscount" class="discount">-$0.00</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax (8%):</span>
-                        <span id="tax">${{ "%.2f"|format(tax) }}</span>
-                    </div>
-                    <div class="total-row final">
-                        <span>Total:</span>
-                        <span id="finalTotal">${{ "%.2f"|format(final_total) }}</span>
-                    </div>
+                <div>
+                    {{ form.submit(class="place-order-btn", value="Place Order") }}
                 </div>
-
-                <!-- Place Order Button -->
-                <button type="button" class="place-order-btn" onclick="placeOrder()">
-                    <i class="fas fa-lock"></i> Place Secure Order
-                </button>
-
-                <!-- Security Notice -->
-                <div class="security-notice">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Your payment information is secure and encrypted</span>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
-
-
-
+</div>
 
 {% endblock content %}

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,SelectField,DateField,PasswordField,SubmitField,BooleanField
+from wtforms import StringField,SelectField,DateField,PasswordField,SubmitField,BooleanField,IntegerField
 from wtforms.validators import DataRequired,Length,Email,optional,EqualTo
 
 class SignupForm(FlaskForm):
@@ -52,3 +52,30 @@ class LoginForm(FlaskForm):
     )
 
     submit = SubmitField("Login")
+
+class OrderForm(FlaskForm):
+    email = StringField(
+        "Email",
+        validators=[DataRequired(),Email()]
+    )
+    contact = StringField(
+        'contact',
+        validators=[DataRequired(),Length(10)]
+    )
+    street = StringField(
+        'street',
+        validators=[DataRequired(), Length(5,50)]
+    )
+    city = StringField(
+        'City',
+        validators=[DataRequired(), Length(3,15)]
+    )
+    state = StringField(
+        'State',
+        validators=[DataRequired(), Length(3,20)]
+    )
+    zip_code = StringField(
+        'Zip Code',
+        validators=[DataRequired(), Length(6)]
+    )
+    submit = SubmitField("Place Order")
