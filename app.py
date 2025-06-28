@@ -1,16 +1,7 @@
 from flask import Flask, flash, render_template, redirect, url_for,flash
 from forms import SignupForm, LoginForm, OrderForm
-from flask import Flask, flash, render_template,request,jsonify, redirect, url_for,flash,session,session
-from forms import SignupForm, LoginForm
 from chips import chipsData,findMaxThreeDiscount
-from users import addUser,validateUser
-from users import user_data,addUser,validateUser
-from datetime import datetime
-import json
-import os
-from werkzeug.security import generate_password_hash
-import uuid
-from users import user_data,addUser,validateUser,addSession,isLoggedIn,logoutUser
+from users import addUser,validateUser,addSession,isLoggedIn,logoutUser
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
@@ -99,8 +90,12 @@ def logout():
 
 @app.route('/order',methods=['GET','POST'])
 def order():
+    email = isLoggedIn()
+    if not email:
+        flash("You need to login for this action","info")
+        return redirect(url_for('login')) 
     form = OrderForm()
-    return render_template("order.html",title="order",form=form)
+    return render_template("order.html",title="order",form=form,user=email)
 
 if __name__ == "__main__":
     app.run(debug=True)
