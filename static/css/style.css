@@ -272,6 +272,33 @@ body {
     }
 }
 
+.product-deal-heading {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ff6b35;
+    margin: 4rem 0 2rem;
+    position: relative;
+}
+
+.product-deal-heading::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    margin: 1rem auto 0;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .product-deal-heading {
+        font-size: 1.8rem;
+        margin: 3rem 0 1.5rem;
+    }
+}
+
+
 .features {
     padding: 6rem 0;
     background: #f8f9fa;
@@ -555,4 +582,76 @@ body {
 
 .view-btn:hover {
     background-color: #0056b3;
+}
+
+.footer {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    padding: 3rem 1rem 1rem;
+    margin-top: 4rem;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: auto;
+    gap: 2rem;
+}
+
+.footer-brand h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-brand p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.footer-links h4,
+.footer-contact h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+    color: #ffd8a6;
+}
+
+.footer-contact p {
+    margin-bottom: 0.5rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
 }

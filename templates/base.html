@@ -35,7 +35,6 @@
                 <li><a href="{{ url_for('products') }}">Products</a></li>
                 <li><a href="{{ url_for('favourites') }}">Favorites</a></li>
                 <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                <li><a href="{{ url_for('order') }}">Order</a></li>
                 {% if user %}
                         <li class="user-small"><a href="{{ url_for('userProfile') }}">Me</a></li>
                 {% else %}
@@ -61,5 +60,36 @@
     {% block content %}
 
     {% endblock content %}
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>CrunchCart</h2>
+                <p>Your one-stop shop for bold flavors and crispy delights!</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('products') }}">Products</a></li>
+                    <li><a href="{{ url_for('favourites') }}">Favorites</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p>Email: support@crunchcart.com</p>
+                <p>Phone: +91 98765 43210</p>
+                <p>Location: India</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 CrunchCart. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="../static/js/script.js"></script>
 </body>
