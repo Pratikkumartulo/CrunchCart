@@ -97,5 +97,13 @@ def order():
     form = OrderForm()
     return render_template("order.html",title="order",form=form,user=email)
 
+@app.route('/cart')
+def cart():
+    email = isLoggedIn()
+    if not email:
+        flash("You need to login for this action","info")
+        return redirect(url_for('login')) 
+    return render_template("cart.html",title="Cart",user=email)
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -61,6 +61,7 @@
     {% block content %}
 
     {% endblock content %}
+    {% if title!= "Login" and title!="Signup" %}
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
@@ -92,6 +93,7 @@
             <p>&copy; 2025 CrunchCart. All rights reserved.</p>
         </div>
     </footer>
+    {% endif %}
 
     <script src="../static/js/script.js"></script>
 </body>
