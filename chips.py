@@ -52,7 +52,7 @@ chipsData = {
         "price": 109.00,
         "image_url": "img7.jpg",
         "description": "Smoky and sweet barbecue seasoning on every chip.",
-        "discount": 10,
+        "discount": 25,
         "stock": 10
     },
     8: {
