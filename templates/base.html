@@ -25,37 +25,22 @@
     {% endwith %}
 
     {% if title!= "Login" and title!="Signup" %}
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">CrunchCart</div>
-
             <ul class="nav-links" id="navLinks">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('about') }}">About</a></li>
-                <li><a href="{{ url_for('products') }}">Products</a></li>
-                <li><a href="{{ url_for('favourites') }}">Favorites</a></li>
-                <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                
-                {% if user %}
-                        <li class="user-small"><a href="{{ url_for('userProfile') }}">Me</a></li>
-                {% else %}
-                        <li class="user-small"><a href="{{ url_for('login') }}">Login</a></li>
-                {% endif %}
+                <li><a href="{{url_for('home')}}">Home</a></li>
+                <li><a href="{{url_for('products')}}">Products</a></li>
+                <li><a href="{{url_for('about')}}">About</a></li>
+                <li><a href="{{url_for('contact')}}">Contact</a></li>
             </ul>
-
-            <div class="user-large">
-                <ul class="nav-links" id="navLinks">
-                    {% if user %}
-                        <a href="{{ url_for('userProfile') }}">Me</a>
-                    {% else %}
-                        <a href="{{ url_for('login') }}">Login</a>
-                    {% endif %}
-                </ul>
+            <div class="hamburger" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
             </div>
-
-            <div class="hamburger" onclick="toggleMobileNav()">☰</div>
         </div>
     </nav>
+
 
     {% endif %}
     {% block content %}

@@ -1,0 +1,1260 @@
+{% extends"base.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrunchCart Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #ff6b35;
+            --secondary-orange: #ff8c42;
+            --accent-orange: #ff9500;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #111111;
+            --hover-bg: #1a1a1a;
+            --border-color: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+            --shadow-primary: rgba(255, 107, 53, 0.3);
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --gradient-primary: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+            --gradient-bg: radial-gradient(ellipse at top, #1a1a1a 0%, #000000 100%);
+            --gradient-card: linear-gradient(145deg, var(--card-bg) 0%, var(--hover-bg) 100%);
+            --glassmorphism: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Enhanced animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-bg);
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 140, 66, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(255, 149, 0, 0.05) 0%, transparent 40%);
+            z-index: -1;
+            animation: backgroundFlow 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFlow {
+            0%, 100% { opacity: 0.4; transform: rotate(0deg) scale(1); }
+            33% { opacity: 0.7; transform: rotate(1deg) scale(1.02); }
+            66% { opacity: 0.5; transform: rotate(-1deg) scale(0.98); }
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Enhanced Sidebar */
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, rgba(17, 17, 17, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 8px 0 32px var(--shadow-dark);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .logo {
+            padding: 40px 25px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--card-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glassmorphism), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .logo:hover::before {
+            left: 100%;
+        }
+
+        .logo h1 {
+            color: var(--primary-orange);
+            font-size: 32px;
+            font-weight: 900;
+            text-shadow: 0 0 30px var(--shadow-primary);
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+        }
+
+        .logo-subtitle {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu {
+            padding: 30px 0;
+        }
+
+        .nav-item {
+            margin: 8px 20px;
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: var(--gradient-primary);
+            transition: width 0.4s ease;
+            z-index: 0;
+            border-radius: 15px;
+        }
+
+        .nav-item:hover::before {
+            width: 100%;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            transform: translateX(8px) translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-primary);
+            border-color: var(--primary-orange);
+        }
+
+        .nav-item.active {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            box-shadow: 0 8px 25px var(--shadow-primary);
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            z-index: 1;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: scale(1.2);
+        }
+
+        .nav-text {
+            font-weight: 600;
+            z-index: 1;
+            position: relative;
+            font-size: 15px;
+        }
+
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1001;
+            background: var(--gradient-primary);
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--shadow-primary);
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            padding: 40px;
+            transition: margin-left 0.4s ease;
+            min-height: 100vh;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            backdrop-filter: blur(30px);
+            padding: 30px 40px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 40px var(--shadow-dark);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .header h2 {
+            color: var(--primary-orange);
+            font-size: 36px;
+            font-weight: 800;
+            text-shadow: 0 0 30px var(--shadow-primary);
+            letter-spacing: -1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .user-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 8px 25px var(--shadow-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.15);
+            border-color: var(--primary-orange);
+        }
+
+        /* Enhanced Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--glassmorphism) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 25px 50px var(--shadow-primary);
+            border-color: var(--primary-orange);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary-orange);
+            margin-bottom: 12px;
+            text-shadow: 0 0 30px var(--shadow-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-trend {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--success);
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            z-index: 1;
+            position: relative;
+        }
+
+        .stat-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 40px;
+            opacity: 0.1;
+            color: var(--primary-orange);
+            z-index: 0;
+        }
+
+        /* Enhanced Content Sections */
+        .section {
+            background: linear-gradient(145deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 40px var(--shadow-dark);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .section h3 {
+            color: var(--primary-orange);
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 800;
+            text-shadow: 0 0 20px var(--shadow-primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Enhanced Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px var(--shadow-dark);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 20px 25px;
+            text-align: left;
+            border-bottom: 1px solid rgba(34, 34, 34, 0.8);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--card-bg) 100%);
+            color: var(--primary-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            background: rgba(17, 17, 17, 0.3);
+        }
+
+        tbody tr:hover {
+            background: rgba(26, 26, 26, 0.8);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.1);
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 6px 20px var(--shadow-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px var(--shadow-primary);
+        }
+
+        .btn-secondary {
+            background: rgba(34, 34, 34, 0.8);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            border-color: var(--primary-orange);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        /* Status Badges */
+        .status {
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status.active {
+            background: linear-gradient(45deg, var(--success), #00cc70);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .status.inactive {
+            background: linear-gradient(45deg, #555, #777);
+            color: white;
+        }
+
+        .status.pending {
+            background: linear-gradient(45deg, var(--warning), #ffcc00);
+            color: black;
+            box-shadow: 0 4px 15px rgba(255, 170, 0, 0.3);
+        }
+
+        /* Quick Actions Grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .action-card {
+            background: linear-gradient(145deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px var(--shadow-primary);
+            border-color: var(--primary-orange);
+        }
+
+        .action-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .action-icon {
+            font-size: 36px;
+            margin-bottom: 18px;
+            color: var(--primary-orange);
+            transition: transform 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.3) rotate(5deg);
+        }
+
+        .action-text {
+            font-weight: 600;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+            font-size: 16px;
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            .sidebar {
+                width: 280px;
+            }
+            
+            .main-content {
+                margin-left: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 100px 25px 25px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+                padding: 25px;
+            }
+
+            .header h2 {
+                font-size: 28px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .table-container {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 15px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 90px 15px 15px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-number {
+                font-size: 36px;
+            }
+
+            .header h2 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                gap: 20px;
+            }
+        }
+
+        /* Enhanced Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 5px;
+            border: 2px solid var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-orange);
+        }
+
+        /* Smooth animations */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 107, 53, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-orange);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Focus states for accessibility */
+        .nav-item:focus,
+        .btn:focus,
+        .action-card:focus {
+            outline: 2px solid var(--primary-orange);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="container">
+        <!-- Enhanced Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h1>CrunchCart</h1>
+                <div class="logo-subtitle">Admin Portal</div>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-item active" data-section="dashboard" tabindex="0">
+                    <i class="nav-icon fas fa-chart-pie"></i>
+                    <span class="nav-text">Dashboard</span>
+                </div>
+                <div class="nav-item" data-section="products" tabindex="0">
+                    <i class="nav-icon fas fa-box"></i>
+                    <span class="nav-text">Products</span>
+                </div>
+                <div class="nav-item" data-section="orders" tabindex="0">
+                    <i class="nav-icon fas fa-shopping-cart"></i>
+                    <span class="nav-text">Orders</span>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Enhanced Main Content -->
+        <div class="main-content" id="mainContent">
+            <!-- Enhanced Header -->
+            <div class="header">
+                <div>
+                    <h2>Admin Dashboard</h2>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Welcome back, Admin</span>
+                    <div class="user-avatar" title="Admin Profile">A</div>
+                </div>
+            </div>
+
+            <!-- Enhanced Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-trend">
+                        <i class="fas fa-arrow-up"></i> +12%
+                    </div>
+                    <div class="stat-number">1,247</div>
+                    <div class="stat-label">Total Orders</div>
+                    <i class="stat-icon fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-trend">
+                        <i class="fas fa-arrow-up"></i> +8.5%
+                    </div>
+                    <div class="stat-number">$24,890</div>
+                    <div class="stat-label">Revenue</div>
+                    <i class="stat-icon fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-trend">
+                        <i class="fas fa-arrow-up"></i> +3.2%
+                    </div>
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">Products</div>
+                    <i class="stat-icon fas fa-box"></i>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-trend">
+                        <i class="fas fa-arrow-up"></i> +15%
+                    </div>
+                    <div class="stat-number">456</div>
+                    <div class="stat-label">Customers</div>
+                    <i class="stat-icon fas fa-users"></i>
+                </div>
+            </div>
+            
+
+            
+            <!-- Enhanced Recent Orders -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-clock"></i>
+                    Recent Orders
+                </h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> Order ID</th>
+                                <th><i class="fas fa-user"></i> Customer</th>
+                                <th><i class="fas fa-shopping-bag"></i> Product</th>
+                                <th><i class="fas fa-dollar-sign"></i> Amount</th>
+                                <th><i class="fas fa-info-circle"></i> Status</th>
+                                <th><i class="fas fa-tools"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>#ORD001</strong></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">JD</div>
+                                        <span>John Doe</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-pepper-hot" style="color: var(--primary-orange);"></i>
+                                        <span>Spicy Nacho Chips</span>
+                                    </div>
+                                </td>
+                                <td><strong style="color: var(--success);">$15.99</strong></td>
+                                <td><span class="status active"><i class="fas fa-check-circle"></i> Completed</span></td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD002</strong></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">JS</div>
+                                        <span>Jane Smith</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-fire" style="color: var(--primary-orange);"></i>
+                                        <span>BBQ Crunch Pack</span>
+                                    </div>
+                                </td>
+                                <td><strong style="color: var(--success);">$22.50</strong></td>
+                                <td><span class="status pending"><i class="fas fa-clock"></i> Pending</span></td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD003</strong></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">MJ</div>
+                                        <span>Mike Johnson</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-cube" style="color: var(--primary-orange);"></i>
+                                        <span>Classic Salt Chips</span>
+                                    </div>
+                                </td>
+                                <td><strong style="color: var(--success);">$12.75</strong></td>
+                                <td><span class="status active"><i class="fas fa-check-circle"></i> Completed</span></td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD004</strong></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">SW</div>
+                                        <span>Sarah Wilson</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-cheese" style="color: var(--primary-orange);"></i>
+                                        <span>Cheese Puffs Deluxe</span>
+                                    </div>
+                                </td>
+                                <td><strong style="color: var(--success);">$18.25</strong></td>
+                                <td><span class="status pending"><i class="fas fa-clock"></i> Pending</span></td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD005</strong></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">TB</div>
+                                        <span>Tom Brown</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-fire-flame-curved" style="color: var(--primary-orange);"></i>
+                                        <span>Hot & Spicy Mix</span>
+                                    </div>
+                                </td>
+                                <td><strong style="color: var(--success);">$27.99</strong></td>
+                                <td><span class="status active"><i class="fas fa-check-circle"></i> Completed</span></td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 25px; text-align: center;">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-list"></i> View All Orders
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top Products Section -->
+            <div class="section">
+                <h3>
+                    <i class="fas fa-star"></i>
+                    Top Selling Products
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                    <div style="background: linear-gradient(145deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%); padding: 25px; border-radius: 20px; border: 1px solid var(--border-color); position: relative; overflow: hidden;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-pepper-hot" style="font-size: 24px; color: white;"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--text-primary); margin: 0; font-size: 18px; font-weight: 700;">Spicy Nacho Chips</h4>
+                                <p style="color: var(--text-muted); margin: 0; font-size: 14px;">234 sold this month</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--success); font-weight: bold; font-size: 18px;">$15.99</span>
+                            <span style="color: var(--primary-orange); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-arrow-up"></i> +18%
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(145deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%); padding: 25px; border-radius: 20px; border: 1px solid var(--border-color); position: relative; overflow: hidden;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-fire" style="font-size: 24px; color: white;"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--text-primary); margin: 0; font-size: 18px; font-weight: 700;">BBQ Crunch Pack</h4>
+                                <p style="color: var(--text-muted); margin: 0; font-size: 14px;">198 sold this month</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--success); font-weight: bold; font-size: 18px;">$22.50</span>
+                            <span style="color: var(--primary-orange); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-arrow-up"></i> +12%
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(145deg, rgba(17, 17, 17, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%); padding: 25px; border-radius: 20px; border: 1px solid var(--border-color); position: relative; overflow: hidden;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <div style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-cheese" style="font-size: 24px; color: white;"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--text-primary); margin: 0; font-size: 18px; font-weight: 700;">Cheese Puffs Deluxe</h4>
+                                <p style="color: var(--text-muted); margin: 0; font-size: 14px;">176 sold this month</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--success); font-weight: bold; font-size: 18px;">$18.25</span>
+                            <span style="color: var(--primary-orange); font-size: 14px; font-weight: 600;">
+                                <i class="fas fa-arrow-up"></i> +8%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <script>
+        // Enhanced JavaScript functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('open');
+            mainContent.classList.toggle('expanded');
+        }
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Add visual feedback
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+
+            // Keyboard navigation
+            item.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    this.click();
+                }
+            });
+        });
+
+        // Action cards functionality
+        document.querySelectorAll('.action-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Add click animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+                
+                // You can add specific functionality for each action here
+                const actionText = this.querySelector('.action-text').textContent;
+                console.log(`Action clicked: ${actionText}`);
+            });
+
+            // Keyboard support
+            card.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    this.click();
+                }
+            });
+        });
+
+        // Stats cards hover effect enhancement
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const number = this.querySelector('.stat-number');
+                number.style.textShadow = '0 0 40px var(--shadow-primary)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                const number = this.querySelector('.stat-number');
+                number.style.textShadow = '0 0 30px var(--shadow-primary)';
+            });
+        });
+
+        // Table row interaction
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', function() {
+                const orderId = this.querySelector('td:first-child strong').textContent;
+                console.log(`Order clicked: ${orderId}`);
+                // Add your order detail functionality here
+            });
+        });
+
+        // Responsive sidebar handling
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                mainContent.classList.add('expanded');
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+            }
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !menuToggle.contains(e.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Initialize
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // Add smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading state simulation for buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.classList.contains('loading')) {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<div class="loading"></div>';
+                    this.classList.add('loading');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('loading');
+                    }, 1500);
+                }
+            });
+        });
+
+        // Add notification system (basic implementation)
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--primary-orange)'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+                z-index: 10000;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Demo notification on page load
+        setTimeout(() => {
+            showNotification('Welcome to CrunchCart Admin Dashboard!', 'success');
+        }, 1000);
+    </script>
+</body>
+</html>
+                
+
+{% endblock content %}

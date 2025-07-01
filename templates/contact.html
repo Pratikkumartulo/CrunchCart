@@ -3,36 +3,565 @@
 
 {% block content %}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact CrunchCart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Contact Hero Section */
+        .about-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%);
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 165, 0, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(255, 69, 0, 0.12) 0%, transparent 50%);
+            animation: glow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .about-hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff4500, #ffa500, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
+        }
+
+        .about-hero p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #cccccc;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Floating Decorations */
+        .hero-decoration {
+            position: absolute;
+            border: 2px solid rgba(255, 165, 0, 0.2);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .hero-decoration:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 15%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .hero-decoration:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 8%;
+            animation-delay: -10s;
+        }
+
+        .hero-decoration:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 60%;
+            right: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Contact Content Section */
+        .about-content {
+            padding: 6rem 0;
+            position: relative;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            position: relative;
+            transition: all 0.4s ease;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .contact-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .contact-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 165, 0, 0.5);
+            box-shadow: 0 25px 50px rgba(255, 165, 0, 0.15);
+        }
+
+        .contact-card:hover::before {
+            opacity: 1;
+        }
+
+        .contact-card h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffa500;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-card h2::before {
+            content: '';
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(135deg, #ff4500, #ffa500);
+            border-radius: 2px;
+        }
+
+        .contact-info {
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-info p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+        }
+
+        .contact-info p:hover {
+            background: rgba(255, 165, 0, 0.1);
+            border-color: rgba(255, 165, 0, 0.3);
+            transform: translateX(10px);
+        }
+
+        .contact-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-info i {
+            font-size: 1.5rem;
+            color: #ffa500;
+            min-width: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info p:hover i {
+            transform: scale(1.2);
+            color: #ff4500;
+        }
+
+        /* Business Hours Styling */
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 4px solid #ffa500;
+            transition: all 0.3s ease;
+        }
+
+        .hours-list p:hover {
+            background: rgba(255, 165, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .day {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .time {
+            color: #ffa500;
+            font-weight: 500;
+        }
+
+        .closed {
+            color: #ff6b6b !important;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-top: 2rem;
+            animation: slideInUp 0.8s ease-out 0.6s both;
+        }
+
+        .contact-form h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffa500;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffa500;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            grid-column: 1 / -1;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #888;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, #ff4500, #ffa500);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 165, 0, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Floating Background Elements */
+        .floating-element {
+            position: fixed;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.05), rgba(255, 69, 0, 0.05));
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            left: 5%;
+            animation: float1 10s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            right: 10%;
+            animation: float2 8s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 30%;
+            left: 20%;
+            animation: float3 12s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(-180deg); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-card {
+                padding: 2rem;
+            }
+
+            .contact-card h2 {
+                font-size: 1.8rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-decoration {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .contact-card {
+                padding: 1.5rem;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+
+            .contact-info p {
+                font-size: 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .hours-list p {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
 
     <div id="contact" class="page">
         <section class="about-hero">
+            <div class="hero-decoration"></div>
+            <div class="hero-decoration"></div>
+            <div class="hero-decoration"></div>
             <div class="container">
-                <h1>Contact Us</h1>
-                <p>We'd love to hear from you!</p>
+                <div class="hero-content">
+                    <h1>Contact Us</h1>
+                    <p>We'd love to hear from you!</p>
+                </div>
             </div>
         </section>
 
         <section class="about-content">
             <div class="container">
                 <div class="about-grid">
-                    <div>
+                    <div class="contact-card">
                         <h2>Get In Touch</h2>
-                        <p><i class="fas fa-envelope"></i>crunchcart@gmail.com</p>
-                        <p><i class="fas fa-phone"></i> +91 12345-6789</p>
-                        <p><i class="fas fa-map-marker-alt"></i>Snack Street, Crunch City, Banglore</p>
+                        <div class="contact-info">
+                            <p>
+                                <i class="fas fa-envelope"></i>
+                                <span>crunchcart@gmail.com</span>
+                            </p>
+                            <p>
+                                <i class="fas fa-phone"></i>
+                                <span>+91 12345-6789</span>
+                            </p>
+                            <p>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Snack Street, Crunch City, Bangalore</span>
+                            </p>
+                        </div>
                     </div>
-                    <div>
+                    
+                    <div class="contact-card">
                         <h2>Business Hours</h2>
-                        <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                        <p>Saturday: 10:00 AM - 4:00 PM</p>
-                        <p>Sunday: Closed</p>
+                        <div class="hours-list">
+                            <p>
+                                <span class="day">Monday - Friday</span>
+                                <span class="time">9:00 AM - 6:00 PM</span>
+                            </p>
+                            <p>
+                                <span class="day">Saturday</span>
+                                <span class="time">10:00 AM - 4:00 PM</span>
+                            </p>
+                            <p>
+                                <span class="day">Sunday</span>
+                                <span class="time closed">Closed</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
+
+               
             </div>
         </section>
     </div>
-
-
-
-
+</body>
+</html>
 {% endblock content %}
