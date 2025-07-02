@@ -141,7 +141,7 @@
             <li>Free shipping for members</li>
         </ul>
         <div class="buy-options">
-            <button class="add-cart">🛒 Add to Cart</button>
+            <a href="{{ url_for('add_to_cart', product_id=id) }}"><button class="add-cart">🛒 Add to Cart</button></a>
             <a href="{{ url_for('order') }}"><button class="buy-now">⚡ Buy Now</button></a>
         </div>
     </div>
