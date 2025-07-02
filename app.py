@@ -1,11 +1,17 @@
+from db import db
 from flask import Flask, flash, render_template, redirect, url_for,flash
+from flask_sqlalchemy import SQLAlchemy
 from forms import SignupForm, LoginForm, OrderForm
 from chips import chipsData,findMaxThreeDiscount
-from users import addUser,validateUser,addSession,isLoggedIn,logoutUser
+from users import addUser,validateUser,addSession,isLoggedIn,logoutUser,add_To_cart
+from config import DATABASE_URI, SECRET_KEY,SQLALCHEMY_TRACK_MODIFICATIONS
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "15bb914121bfb88e90cd224850b5e614"
+app.config["SECRET_KEY"] = SECRET_KEY
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
+db.init_app(app)
 
 @app.route("/")
 @app.route("/home")
@@ -77,7 +83,7 @@ def ProductDetail(id):
         chip = chipsData.get(int(id))
         if not chip:
             return redirect(url_for('products'))
-        return render_template('product_detail.html',title=f"CrunchCart - {chip['name']}",chipDet = chip,user=email)
+        return render_template('product_detail.html',title=f"CrunchCart - {chip['name']}",chipDet = chip,user=email,id=id)
     else:
         flash("You need to login for this action","info")
         return redirect(url_for('login'))
@@ -103,7 +109,26 @@ def cart():
     if not email:
         flash("You need to login for this action","info")
         return redirect(url_for('login')) 
-    return render_template("cart.html",title="Cart",user=email)
+    ids = email['cart'].split(',')
+    # also add id = id in products
+    products = [{"product": chipsData.get(int(id)), "id": int(id)} for id in ids if chipsData.get(int(id))]
+    return render_template("cart.html",title="Cart",user=email,products=products)
+
+@app.route('/add_to_cart/<int:product_id>')
+def add_to_cart(product_id):
+    email = isLoggedIn()
+    if not email:
+        flash("You need to login for this action","info")
+        return redirect(url_for('login')) 
+    if add_To_cart(product_id):
+        flash("Product added to cart successfully!","success")
+    else:
+        flash("Product already in cart!","error")
+    return redirect(url_for('products'))
+
+with app.app_context():
+    db.create_all()
+
 
 if __name__ == "__main__":
     app.run(debug=True)

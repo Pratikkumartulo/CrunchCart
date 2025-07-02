@@ -1,20 +1,57 @@
 from flask import session
-user_data = {}
+from db import db
+from sqlalchemy.dialects.mysql import JSON
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15))
+    email = db.Column(db.String(120))
+    gender = db.Column(db.String(10))
+    dob = db.Column(db.Date)
+    password = db.Column(db.String(60))
+    cart = db.Column(db.String(255), default="")
+    orders = db.Column(JSON, default=[])
+
+    def user_Details(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "gender": self.gender,
+            "dob": self.dob.strftime('%Y-%m-%d') if self.dob else None,
+            "cart": self.cart,
+            "orders": self.orders
+        }
 
 def addUser(username,email,gender,dob,password):
-    if email in user_data:
+    user = User.query.filter_by(email=email).first()
+    print(user)
+    if user:
         return False
     else:
-        user_data[email] = {"username":username,
-                            'gender':gender,
-                            "dob":dob,
-                            "password":password}
+        new_user = User(username=username, email=email, gender=gender, dob=dob, password=password)
+        db.session.add(new_user)
+        db.session.commit()
         return True
 
-def validateUser(email,password):
-    if email not in user_data:
+def add_To_cart(product_id):
+    user = User.query.filter_by(email=session['email']).first()
+    if not user:
         return False
-    if user_data[email]['password'] == password:
+    cart_list = user.cart.split(",") if user.cart else []
+    if str(product_id) not in cart_list:
+        cart_list.append(str(product_id))
+        user.cart = ",".join(cart_list)
+        db.session.commit()
+        return True
+    else:
+        return False
+
+def validateUser(email,password):
+    email = User.query.filter_by(email=email).first()
+    if not email:
+        return False
+    if email.password == password:
         return True
     else:
         return False
@@ -23,8 +60,11 @@ def addSession(email):
     session['email'] = email
 
 def isLoggedIn():
-    if 'email' in session and session['email'] in user_data:
-        Curruser = {k: v for k, v in user_data[session['email']].items() if k != 'password'}
+    if 'email' in session:
+        user = User.query.filter_by(email=session['email']).first()
+        if not user:
+            return None
+        Curruser = user.user_Details()
         Curruser['email'] = session['email']
         return Curruser
     else:

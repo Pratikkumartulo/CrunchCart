@@ -86,6 +86,14 @@
         box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
     }
 
+    .logout-button {
+        background-color: #e53935;
+    }
+
+    .logout-button:hover {
+        background-color: #c62828;
+    }
+
     @media (max-width: 768px) {
         .user-profile {
             margin: 100px 20px 40px;
@@ -130,7 +138,11 @@
     </div>
 
     <div class="user-actions">
-        <a href="{{ url_for('logout') }}">Logout</a>
+        <a href="{{ url_for('cart') }}">View My Cart</a>
+        <a href="{{ url_for('order') }}">View My Orders</a>
+    </div>
+    <div class="user-actions">
+        <a href="{{ url_for('logout') }}" style="background-color: #e53935;">Logout</a>
     </div>
 </div>
 {% endblock %}

@@ -1,5 +1,4 @@
-
-    {% extends "base.html" %}
+{% extends"base.html" %}
     
     {% block content %}
 
@@ -15,15 +14,16 @@
             background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
             color: #e0e0e0;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* Fix for content going under navbar */
-        .main-content {
-            padding: 6rem 0 2rem; /* Increased top padding to create space below navbar */
-            min-height: calc(100vh - 100px);
-            width: 100%;
-            position: relative;
+        /* .header {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .container {
@@ -31,6 +31,25 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: "🥨";
+            font-size: 2.5rem;
+        } */
 
         .cart-info {
             display: flex;
@@ -115,16 +134,24 @@
         }
 
         .item-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            background: linear-gradient(135deg, #ffecb3 0%, #ffe0b2 100%);
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.15);
+            border: 2px solid #ffb300;
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
             margin-right: 1.5rem;
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .item-image img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .item-details {
@@ -139,7 +166,7 @@
         }
 
         .item-flavor {
-            color: #ff6b35;
+            color : #888;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
@@ -293,6 +320,7 @@
             font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
+            /* transition: all 0.3 */
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
@@ -403,50 +431,23 @@
                     </div>
                     
                     <div id="cartItemsList">
-                        <div class="item" data-id="1">
-                            <div class="item-image">🥔</div>
+                        {% if not products %}
+                        <p>Your cart is empty!</p>
+                        {% else %}
+                        {% for product in products %}
+                        <div class="item" data-id="{{ product.id }}">
+                            <div class="item-image" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ffecb3 0%, #ffe0b2 100%); box-shadow: 0 2px 8px rgba(255, 107, 53, 0.15); border: 2px solid #ffb300;">
+                                <img src="../static/images/{{ product.product.image_url }}" alt="" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                            </div>
                             <div class="item-details">
-                                <div class="item-name">Classic Potato Chips</div>
-                                <div class="item-flavor">Sea Salt & Vinegar</div>
-                                <div class="item-price">$4.99</div>
+                                <div class="item-name">{{ product.product.name }}</div>
+                                <div class="item-flavor">{{ product.product.description }}</div>
+                                <div class="item-price">₹{{ product.product.price }}</div>
                             </div>
-                            <div class="quantity-controls">
-                                <button class="qty-btn" onclick="updateQuantity(1, -1)">-</button>
-                                <span class="quantity">2</span>
-                                <button class="qty-btn" onclick="updateQuantity(1, 1)">+</button>
-                            </div>
-                            <button class="remove-btn" onclick="removeItem(1)">🗑️</button>
-                        </div>
 
-                        <div class="item" data-id="2">
-                            <div class="item-image">🌶️</div>
-                            <div class="item-details">
-                                <div class="item-name">Spicy Jalapeño Chips</div>
-                                <div class="item-flavor">Extra Hot & Crispy</div>
-                                <div class="item-price">$5.49</div>
-                            </div>
-                            <div class="quantity-controls">
-                                <button class="qty-btn" onclick="updateQuantity(2, -1)">-</button>
-                                <span class="quantity">1</span>
-                                <button class="qty-btn" onclick="updateQuantity(2, 1)">+</button>
-                            </div>
-                            <button class="remove-btn" onclick="removeItem(2)">🗑️</button>
                         </div>
-
-                        <div class="item" data-id="3">
-                            <div class="item-image">🧀</div>
-                            <div class="item-details">
-                                <div class="item-name">Cheese Puffs</div>
-                                <div class="item-flavor">Aged Cheddar</div>
-                                <div class="item-price">$3.99</div>
-                            </div>
-                            <div class="quantity-controls">
-                                <button class="qty-btn" onclick="updateQuantity(3, -1)">-</button>
-                                <span class="quantity">3</span>
-                                <button class="qty-btn" onclick="updateQuantity(3, 1)">+</button>
-                            </div>
-                            <button class="remove-btn" onclick="removeItem(3)">🗑️</button>
-                        </div>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
 
