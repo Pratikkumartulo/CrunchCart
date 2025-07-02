@@ -1,11 +1,22 @@
+// Flash message handling
 function hideFlash() {
     const flash = document.getElementById('flashMsg');
-    flash.classList.add('hide');
-
-    setTimeout(() => {
-        flash.style.display = 'none';
-    }, 300);
+    if (flash) {
+        flash.classList.add('hide');
+        setTimeout(() => {
+            flash.style.display = 'none';
+        }, 300);
+    }
 }
+
+// Auto-hide flash message after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const flash = document.getElementById('flashMsg');
+    if (flash) {
+        // Set timeout to match the progress bar animation (5 seconds)
+        setTimeout(hideFlash, 5000);
+    }
+});
 
 function toggleMobileNav() {
     const navLinks = document.getElementById("navLinks");

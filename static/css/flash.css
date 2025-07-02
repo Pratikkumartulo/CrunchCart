@@ -1,44 +1,87 @@
 .flash-message {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    transform: translateY(100%);
+    bottom: 30px;
+    right: 30px;
+    transform: translateY(150%);
     background: #fff;
     color: #333;
-    padding: 15px 25px;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     z-index: 9999;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
-    min-width: 300px;
-    text-align: center;
-    border-left: 4px solid #007bff;
+    min-width: 320px;
+    max-width: 400px;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
     animation: slideUp 0.5s ease-out forwards;
 }
 
+.flash-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    font-size: 20px;
+}
+
+.flash-content {
+    flex: 1;
+    padding: 15px 5px 15px 0;
+    position: relative;
+}
+
+.flash-content p {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+}
+
+.flash-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.flash-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+    0% { width: 100%; }
+    100% { width: 0%; }
+}
+
 .flash-message.success {
-    border-left-color: #28a745;
-    background: #d4edda;
-    color: #155724;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
 }
 
 .flash-message.error {
-    border-left-color: #dc3545;
-    background: #f8d7da;
-    color: #721c24;
+    background: linear-gradient(135deg, #dc3545, #e74c3c);
+    color: white;
 }
 
 .flash-message.warning {
-    border-left-color: #ffc107;
-    background: #fff3cd;
-    color: #856404;
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    color: #212529;
 }
 
 .flash-message.info {
-    border-left-color: #17a2b8;
-    background: #d1ecf1;
-    color: #0c5460;
+    background: linear-gradient(135deg, #17a2b8, #0dcaf0);
+    color: white;
 }
 
 @keyframes slideUp {
@@ -53,18 +96,20 @@
 
 @keyframes slideDown {
     to {
-        transform: translateY(100%);
+        transform: translateY(150%);
     }
 }
 
 .close-btn {
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 22px;
     cursor: pointer;
-    float: right;
-    margin-left: 10px;
+    padding: 0 15px;
+    color: inherit;
     opacity: 0.7;
+    align-self: center;
+    transition: opacity 0.2s;
 }
 
 .close-btn:hover {

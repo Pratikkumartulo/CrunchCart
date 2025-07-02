@@ -1,27 +1,12 @@
 {% extends "base.html" %}
 
-
 {% block content %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrunchCart - Premium Collection</title>
+<div id="products" class="page">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
             color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
         }
 
         .container {
@@ -30,514 +15,173 @@
             padding: 0 20px;
         }
 
-        /* Products Header */
         .products-header {
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%);
-            overflow: hidden;
-        }
-
-        .products-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(255, 165, 0, 0.15) 0%, transparent 60%),
-                        radial-gradient(circle at 80% 70%, rgba(255, 69, 0, 0.15) 0%, transparent 60%);
-            animation: glow 6s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            0% { opacity: 0.4; }
-            100% { opacity: 0.8; }
-        }
-
-        .products-header .container {
             text-align: center;
-            position: relative;
-            z-index: 2;
-            animation: fadeInUp 1.2s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            padding: 4rem 0 2rem;
         }
 
         .products-header h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 800;
+            font-size: 3rem;
             background: linear-gradient(135deg, #ff4500, #ffa500, #ffff00);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
+            -webkit-text-fill-color: transparent;
         }
 
         .products-header p {
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
-            color: #cccccc;
-            font-weight: 300;
-            opacity: 0;
-            animation: fadeIn 1.5s ease-out 0.5s forwards;
+            color: #ccc;
+            font-size: 1.2rem;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Products Container */
         .products-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
-            padding: 4rem 0;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0 4rem;
         }
 
-        /* Product Box */
         .product-box {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(15px);
+            background: #1c1c1c;
             border: 1px solid rgba(255, 165, 0, 0.2);
-            border-radius: 25px;
-            padding: 2rem;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 20px;
             overflow: hidden;
-            animation: slideInUp 0.8s ease-out;
-            animation-fill-mode: both;
-        }
-
-        .product-box:nth-child(1) { animation-delay: 0.1s; }
-        .product-box:nth-child(2) { animation-delay: 0.2s; }
-        .product-box:nth-child(3) { animation-delay: 0.3s; }
-        .product-box:nth-child(4) { animation-delay: 0.4s; }
-        .product-box:nth-child(5) { animation-delay: 0.5s; }
-        .product-box:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .product-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 69, 0, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            box-shadow: 0 10px 25px rgba(255, 165, 0, 0.08);
+            transition: all 0.3s ease;
         }
 
         .product-box:hover {
-            transform: translateY(-15px) scale(1.02);
-            border-color: rgba(255, 165, 0, 0.6);
-            box-shadow: 0 25px 50px rgba(255, 165, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 165, 0, 0.15);
         }
 
-        .product-box:hover::before {
-            opacity: 1;
+        .product-image-container {
+            background: #fff;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
         }
 
-        /* Discount Tag */
-        .tag {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #ff4500, #ff6347);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            z-index: 3;
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
-            animation: pulse 2s infinite;
+        .product-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Product Image */
-        .product-box img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            transition: transform 0.4s ease;
-            position: relative;
-            z-index: 2;
-        }
-
-        .product-box:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Product Title */
-        .product-box h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 2;
+        .product-content {
+            padding: 1rem 1.2rem 1.5rem;
             text-align: center;
         }
 
-        /* Price Tag */
-        .pricetag {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            position: relative;
+        .tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff4500, #ff6347);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 12px;
             z-index: 2;
         }
 
-        .pricetag .price {
-            font-size: 1.8rem;
-            font-weight: 800;
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: #fff;
+        }
+
+        .pricetag {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
             color: #ffa500;
-            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
         }
 
-        .pricetag .discounted {
-            font-size: 1.2rem;
-            color: #888;
+        .discounted {
+            font-size: 1rem;
             text-decoration: line-through;
-            position: relative;
+            color: #888;
         }
 
-        /* View Button */
         .view-btn {
+            padding: 0.7rem 1.5rem;
             width: 100%;
-            padding: 1rem 2rem;
             background: linear-gradient(135deg, #ff4500, #ffa500);
             color: white;
             border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .view-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
         }
 
         .view-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 165, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(255, 165, 0, 0.3);
         }
 
-        .view-btn:hover::before {
-            left: 100%;
-        }
-
-        .view-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Floating Background Elements */
-        .floating-element {
-            position: fixed;
-            background: linear-gradient(135deg, rgba(255, 165, 0, 0.05), rgba(255, 69, 0, 0.05));
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            top: 10%;
-            left: 5%;
-            animation: float1 8s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 60%;
-            right: 8%;
-            animation: float2 12s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            bottom: 20%;
-            left: 15%;
-            animation: float3 10s ease-in-out infinite;
-        }
-
-        @keyframes float1 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(180deg); }
-        }
-
-        @keyframes float2 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-50px) rotate(-180deg); }
-        }
-
-        @keyframes float3 {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(360deg); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .products-container {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 2rem;
-                padding: 3rem 0;
+        @media (max-width: 500px) {
+            .product-image-container {
+                height: 180px;
+                padding: 1rem;
             }
 
-            .product-box {
-                padding: 1.5rem;
-            }
-
-            .product-box img {
-                height: 200px;
-            }
-
-            .pricetag {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 15px;
-            }
-
-            .products-container {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .product-box {
-                padding: 1.2rem;
-            }
-
-            .product-box h2 {
-                font-size: 1.3rem;
-            }
-
-            .view-btn {
-                padding: 0.8rem 1.5rem;
+            .product-name {
                 font-size: 1rem;
+            }
+
+            .price {
+                font-size: 1.2rem;
             }
         }
     </style>
-</head>
-<body>
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
 
-    <div id="products" class="page">
-        <section class="products-header">
-            <div class="container">
-                <h1>Our Premium Collection</h1>
-                <p>Discover our handcrafted selection of gourmet chips</p>
-            </div>
-        </section>
+    <section class="products-header">
+        <div class="container">
+            <h1>Our Premium Collection</h1>
+            <p>Discover our handcrafted selection of gourmet chips</p>
+        </div>
+    </section>
 
-        <section class="container">
-            <div class="products-container">
-                <!-- Sample Product 1 -->
-                <div class="product-box">
-                    <div class="tag">25%</div>
-                    <img src="../static/images/img1.jpg">
-                    <h2>Sour Cream & Cheddar</h2>
-                    <div class="pricetag">
-                        <p class="discounted">₹120</p>
-                        <p class="price">₹90</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
+    <section class="container">
+        <div class="products-container">
+            {% for id, chip in chips.items() %}
+            <div class="product-box">
+                {% if chip['discount'] > 0 %}
+                <div class="tag">{{ chip['discount'] }}% OFF</div>
+                {% endif %}
+
+                <div class="product-image-container">
+                    <img src="../static/images/{{ chip['image_url'] }}" alt="{{ chip['name'] }}">
                 </div>
 
-                <!-- Sample Product 2 -->
-                <div class="product-box">
-                    <img src="../static/images/img2.jpg">
-                    <h2>Ginger</h2>
+                <div class="product-content">
+                    <div class="product-name">{{ chip['name'] }}</div>
                     <div class="pricetag">
-                        <p class="price">₹99</p>
+                        {% if chip['discount'] > 0 %}
+                        <span class="discounted">₹{{ chip['price'] }}</span>
+                        {% endif %}
+                        <span class="price">₹{{ chip['price'] - (chip['price'] * chip['discount'] / 100) }}</span>
                     </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 3 -->
-                <div class="product-box">
-                    <div class="tag">15%</div>
-                    <img src="../static/images/img3.jpg">
-                    <h2>Carolina Reaper</h2>
-                    <div class="pricetag">
-                        <p class="discounted">₹100</p>
-                        <p class="price">₹59</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-               <!-- Sample Product 4 -->
-                <div class="product-box">
-                    <img src="../static/images/img4.jpg">
-                    <h2>Salt & Vinegar</h2>
-                    <div class="pricetag">
-                        <p class="price">₹49</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 5 -->
-                <div class="product-box">
-                    <div class="tag">30%</div>
-                    <img src="../static/images/img5.jpg">
-                    <h2>Dill Pickle</h2>
-                    <div class="pricetag">
-                        <p class="discounted">₹110</p>
-                        <p class="price">₹79</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 6 -->
-                <div class="product-box">
-                    <img src="../static/images/img6.jpg">
-                    <h2>Sour Cream & Onion</h2>
-                    <div class="pricetag">
-                        <p class="price">₹79</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 7 -->
-                <div class="product-box">
-                    <img src="../static/images/img7.jpg">
-                    <h2>Barbecue</h2>
-                    <div class="pricetag">
-                        <p class="price">₹109</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 8 -->
-                <div class="product-box">
-                    <img src="../static/images/img8.jpg">
-                    <h2>Chile Limon</h2>
-                    <div class="pricetag">
-                        <p class="price">₹89</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 9 -->
-                <div class="product-box">
-                    <img src="../static/images/img10.jpg">
-                    <h2>Garlic</h2>
-                    <div class="pricetag">
-                        <p class="price">₹69</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 10 -->
-                <div class="product-box">
-                    <img src="../static/images/img11.jpg">
-                    <h2>Spicy Schezwan</h2>
-                    <div class="pricetag">
-                        <p class="price">₹19</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 11 -->
-                <div class="product-box">
-                    <img src="../static/images/img12.jpg">
-                    <h2>Sweet & Spicy Honey</h2>
-                    <div class="pricetag">
-                        <p class="price">₹39</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 12 -->
-                <div class="product-box">
-                    <img src="../static/images/img13.jpg">
-                    <h2>Adobadas</h2>
-                    <div class="pricetag">
-                        <p class="price">₹29</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 13 -->
-                <div class="product-box">
-                    <img src="../static/images/img14.jpg">
-                    <h2>Spicy Peri Peri</h2>
-                    <div class="pricetag">
-                        <p class="price">₹29</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
-                </div>
-
-                <!-- Sample Product 14 -->
-                <div class="product-box">
-                    <img src="../static/images/img15.jpg">
-                    <h2>Classic(Salted)</h2>
-                    <div class="pricetag">
-                        <p class="price">₹59</p>
-                    </div>
-                    <button class="view-btn">View Details</button>
+                    <a href="{{ url_for('ProductDetail', id=id) }}">
+                        <button class="view-btn">View Details</button>
+                    </a>
                 </div>
             </div>
-        </section>
-    </div>
-</body>
-</html>
-
-
-
+            {% endfor %}
+        </div>
+    </section>
+</div>
 {% endblock content %}
-

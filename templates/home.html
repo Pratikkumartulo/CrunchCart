@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrunchCart - Premium Chips & Snacks</title>
+    <title>CrunchCart - Premium Chips & Snacks</title> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -43,87 +43,11 @@
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #e55a2b, #e6820a);
         }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1rem 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
-        }
-
-        .nav-container {
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 2.2rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-links a:hover {
-            color: #ff6b35;
-            transform: translateY(-2px);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .hamburger {
-            display: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #ff6b35;
-        }
-
         /* Hero Section with Chip Animations */
         .hero {
             background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
             color: white;
-            padding: 8rem 0;
+            /* padding: 8rem 0; */
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -392,8 +316,8 @@
             position: relative;
             background: linear-gradient(135deg, #ff6b35, #f7931e);
             -webkit-background-clip: text;
+            background-clip: text; /* Add standard property */
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .product-deal-heading::after {
@@ -568,9 +492,50 @@
                 padding: 0 1rem;
             }
         }
+
+        /* Add this to ensure footer spans full width */
+        .site-footer {
+            width: 100%;
+            margin: 0;
+            padding: 3rem 1rem 1rem;
+            box-sizing: border-box;
+            left: 0;
+            right: 0;
+        }
+
+        /* Fix container width */
+        .site-footer-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        /* Ensure the page structure doesn't interfere with footer */
+        #home.page {
+            min-height: calc(100vh - 200px); /* Adjust based on footer height */
+            position: relative;
+            width: 100%;
+        }
+
+        /* Remove any margin that might be causing the issue */
+        .products-container {
+            margin-bottom: 0;
+        }
+
+        /* Ensure body allows full width elements */
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
-</head>
-<body>
+<!-- </head>
+<body> -->
     <!-- Home Page -->
     <div id="home" class="page active">
         <section class="hero">
@@ -633,38 +598,18 @@
     <h2 class="product-deal-heading">🔥 Explosive Deals on Crunchy Favorites!</h2>
     <div class="products-container">
         <!-- Sample Products (Replace with your Flask template) -->
+         {% for chip in chips %}
         <div class="product-box">
-            <div class="tag">20%</div>
-            <img src="../static/images/img3.jpg">
-            <h2>Carolina Reaper</h2>
+            <div class="tag">{{chip.discount}}%</div>
+            <img src="../static/images/{{chip.image_url}}">
+            <h2>{{ chip.name }}</h2>
             <div class="pricetag">
-                <p class="discounted">₹120</p>
-                <p class="price">₹90</p>
+                <p class="discounted">₹{{ chip.price }}</p>
+                <p class="price">₹{{ chip.price - (chip.price * chip.discount / 100) }}</p>
             </div>
-            <button class="view-btn">View Details</button>
+            <a href="{{url_for('ProductDetail',id=chip.id)}}"><button class="view-btn">View Details</button></a>
         </div>
-
-        <div class="product-box">
-            <div class="tag">30%</div>
-            <img src="../static/images/img7.jpg">
-            <h2>Barbecue</h2>
-            <div class="pricetag">
-                <p class="discounted">₹150</p>
-                <p class="price">₹105</p>
-            </div>
-            <button class="view-btn">View Details</button>
-        </div>
-
-        <div class="product-box">
-            <div class="tag">40%</div>
-            <img src="../static/images/img13.jpg">
-            <h2>Adobadas</h2>
-            <div class="pricetag">
-                <p class="discounted">₹100</p>
-                <p class="price">₹80</p>
-            </div>
-            <button class="view-btn">View Details</button>
-        </div>
+        {% endfor %}
 
     <script>
         // Toggle Navigation
@@ -734,7 +679,4 @@
             }
         });
     </script>
-</body>
-</html>
-
 {% endblock content %}

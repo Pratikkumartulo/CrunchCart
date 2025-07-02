@@ -4,25 +4,31 @@
 
 <style>
     body {
-        background-color: #fff;
-        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+        color: #e0e0e0;
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
     }
 
     .order-container {
         padding: 100px 20px;
         text-align: center;
-        background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 143, 65, 0.1)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255, 255, 255, 0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255, 255, 255, 0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255, 255, 255, 0.1)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255, 255, 255, 0.1)"/><circle cx="10" cy="70" r="1.5" fill="rgba(255, 255, 255, 0.1)"/></svg>') no-repeat center center fixed;
+        background: linear-gradient(135deg, rgba(30, 30, 30, 0.6), rgba(20, 20, 20, 0.6)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255, 107, 53, 0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255, 107, 53, 0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255, 107, 53, 0.1)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255, 107, 53, 0.1)"/><circle cx="10" cy="70" r="1.5" fill="rgba(255, 107, 53, 0.1)"/></svg>') no-repeat center center fixed;
         background-size: cover;
     }
 
     .order-wrapper {
         max-width: 800px;
         margin: 0 auto;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(30, 30, 30, 0.8);
         border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         padding: 20px;
         animation: fadeIn 0.5s ease-in-out;
+        border: 1px solid rgba(255, 107, 53, 0.1);
+        backdrop-filter: blur(10px);
     }
 
     @keyframes fadeIn {
@@ -37,82 +43,106 @@
     }
 
     .order-header {
-        background: #ff6b35;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
         padding: 30px;
         border-radius: 16px 16px 0 0;
         color: white;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
     .order-header h1 {
         font-size: 2.5rem;
         margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .order-header p {
         font-size: 1.2rem;
+        opacity: 0.9;
     }
 
     .form-section {
-        background: rgba(240, 240, 240, 0.85);
-        border: 1px solid #e5e5e5;
+        background: rgba(40, 40, 40, 0.7);
+        border: 1px solid rgba(255, 107, 53, 0.2);
         border-radius: 12px;
-        padding: 20px;
-        margin: 20px 0;
+        padding: 25px;
+        margin: 25px 0;
+        text-align: left;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        overflow: hidden; /* Prevent content from overflowing */
     }
 
     .form-section-title {
         font-size: 1.5rem;
         color: #ff6b35;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-section-title i {
+        color: #f7931e;
     }
 
     .form-label {
         font-weight: bold;
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         text-align: left;
+        color: #e0e0e0;
     }
 
     .form-control {
-        padding: 10px;
+        padding: 12px 15px;
         border-radius: 8px;
-        border: 1px solid #ccc;
-        width: 100%;
-        margin-bottom: 15px;
-        transition: border 0.3s;
+        border: 1px solid #444;
+        width: calc(100% - 32px); /* Adjust width to account for padding */
+        margin-bottom: 20px;
+        transition: all 0.3s;
+        background-color: rgba(50, 50, 50, 0.8);
+        color: #e0e0e0;
+        font-size: 1rem;
+        box-sizing: border-box; /* Ensure padding is included in width calculation */
     }
 
     .form-control:focus {
         border: 1px solid #ff6b35;
         outline: none;
-        background: #fff;
+        background-color: rgba(60, 60, 60, 0.9);
+        box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
     }
 
     .place-order-btn {
-        background: #ff6b35;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
         border: none;
         color: white;
-        padding: 12px 30px;
+        padding: 14px 35px;
         border-radius: 30px;
         font-size: 1.2rem;
         cursor: pointer;
-        margin-top: 20px;
+        margin-top: 25px;
         transition: all 0.3s;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
     .place-order-btn:hover {
-        background: #f7941d;
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, #f7931e, #ff6b35);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
     }
 
     .security-badge {
-        color: #6c757d;
+        color: #aaa;
         font-size: 0.9rem;
-        margin-top: 10px;
+        margin-top: 15px;
         display: inline-block;
-        padding: 5px 10px;
-        border: 1px solid rgba(40, 167, 69, 0.1);
+        padding: 8px 15px;
+        border: 1px solid rgba(255, 107, 53, 0.2);
         border-radius: 5px;
+        background-color: rgba(40, 40, 40, 0.7);
     }
 
     @media (max-width: 768px) {
@@ -127,6 +157,11 @@
         .place-order-btn {
             width: 100%;
         }
+    }
+
+    /* Add this to ensure all form elements use border-box sizing */
+    * {
+        box-sizing: border-box;
     }
 </style>
 

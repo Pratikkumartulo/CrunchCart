@@ -13,12 +13,23 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
-    <!-- <div class="flash-container" id="flashContainer">
-            {{ category }} , {{ message }}
-        </div> -->
     <div class="flash-message {{ category }}" id="flashMsg">
+        <div class="flash-icon">
+            {% if category == 'success' %}
+            ✅
+            {% elif category == 'error' %}
+            ❌
+            {% elif category == 'warning' %}
+            ⚠️
+            {% else %}
+            ℹ️
+            {% endif %}
+        </div>
+        <div class="flash-content">
+            <p>{{ message }}</p>
+            <div class="flash-progress"></div>
+        </div>
         <button class="close-btn" onclick="hideFlash()">&times;</button>
-        {{ message }}
     </div>
     {% endfor %}
     {% endif %}
@@ -32,8 +43,22 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="{{url_for('home')}}">Home</a></li>
                 <li><a href="{{url_for('products')}}">Products</a></li>
+                <li><a href="{{url_for('favourites')}}">Favourites</a></li>
                 <li><a href="{{url_for('about')}}">About</a></li>
                 <li><a href="{{url_for('contact')}}">Contact</a></li>
+                {% if user %}
+                <li><a href="{{url_for('cart')}}">Cart</a></li>
+                <li><a href="{{url_for('userProfile')}}">Profile</a></li>
+                <li><a href="{{url_for('logout')}}">Logout</a></li>
+                {% else %}
+                <li class="login-button-container">
+                    <a href="{{url_for('login')}}" class="login-button">
+                        <span class="login-icon">🔐</span>
+                        <span class="login-text">Login</span>
+                        <span class="login-shine"></span>
+                    </a>
+                </li>
+                {% endif %}
             </ul>
             <div class="hamburger" onclick="toggleNav()">
                 <i class="fas fa-bars"></i>
@@ -47,14 +72,14 @@
 
     {% endblock content %}
     {% if title!= "Login" and title!="Signup" %}
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
+    <footer class="site-footer">
+        <div class="site-footer-container">
+            <div class="site-footer-brand">
                 <h2>CrunchCart</h2>
                 <p>Your one-stop shop for bold flavors and crispy delights!</p>
             </div>
 
-            <div class="footer-links">
+            <div class="site-footer-links">
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -66,7 +91,7 @@
                 </ul>
             </div>
 
-            <div class="footer-contact">
+            <div class="site-footer-contact">
                 <h4>Contact Us</h4>
                 <p>Email: support@crunchcart.com</p>
                 <p>Phone: +91 98765 43210</p>
@@ -74,10 +99,11 @@
             </div>
         </div>
 
-        <div class="footer-bottom">
+        <div class="site-footer-bottom">
             <p>&copy; 2025 CrunchCart. All rights reserved.</p>
         </div>
     </footer>
+
     {% endif %}
 
     <script src="../static/js/script.js"></script>

@@ -1,5 +1,5 @@
 
-    {% extends"base.html" %}
+    {% extends "base.html" %}
     
     {% block content %}
 
@@ -11,45 +11,25 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #fff5f0 0%, #ffffff 100%);
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            color: #e0e0e0;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        /* Fix for content going under navbar */
+        .main-content {
+            padding: 6rem 0 2rem; /* Increased top padding to create space below navbar */
+            min-height: calc(100vh - 100px);
+            width: 100%;
+            position: relative;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo::before {
-            content: "🥨";
-            font-size: 2.5rem;
         }
 
         .cart-info {
@@ -72,10 +52,6 @@
             text-align: center;
         }
 
-        .main-content {
-            padding: 2rem 0;
-        }
-
         .page-title {
             text-align: center;
             margin-bottom: 2rem;
@@ -85,11 +61,11 @@
             color: #ff6b35;
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .page-title p {
-            color: #666;
+            color: #aaa;
             font-size: 1.1rem;
         }
 
@@ -101,14 +77,15 @@
         }
 
         .cart-items {
-            background: white;
+            background: rgba(30, 30, 30, 0.8);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             overflow: hidden;
+            border: 1px solid rgba(255, 107, 53, 0.1);
         }
 
         .cart-header {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             color: white;
             padding: 1.5rem;
             text-align: center;
@@ -123,12 +100,13 @@
             display: flex;
             align-items: center;
             padding: 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #333;
             transition: all 0.3s ease;
+            background: rgba(40, 40, 40, 0.5);
         }
 
         .item:hover {
-            background: #fff5f0;
+            background: rgba(50, 50, 50, 0.8);
             transform: translateX(5px);
         }
 
@@ -140,7 +118,7 @@
             width: 80px;
             height: 80px;
             border-radius: 15px;
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -156,7 +134,7 @@
         .item-name {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #333;
+            color: #fff;
             margin-bottom: 0.5rem;
         }
 
@@ -168,7 +146,7 @@
 
         .item-price {
             font-size: 1.1rem;
-            color: #666;
+            color: #ccc;
         }
 
         .quantity-controls {
@@ -200,9 +178,10 @@
             font-weight: bold;
             min-width: 30px;
             text-align: center;
-            background: #fff5f0;
+            background: rgba(255, 107, 53, 0.2);
             padding: 5px 10px;
             border-radius: 10px;
+            color: #fff;
         }
 
         .remove-btn {
@@ -221,15 +200,15 @@
         }
 
         .order-summary {
-            background: white;
+            background: rgba(30, 30, 30, 0.8);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             height: fit-content;
-            /* sticky: top-100px; */
+            border: 1px solid rgba(255, 107, 53, 0.1);
         }
 
         .summary-header {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             color: white;
             padding: 1.5rem;
             text-align: center;
@@ -245,10 +224,12 @@
             justify-content: space-between;
             margin-bottom: 1rem;
             padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
         }
 
         .summary-row.total {
             border-top: 2px solid #ff6b35;
+            border-bottom: none;
             padding-top: 1rem;
             font-size: 1.2rem;
             font-weight: bold;
@@ -258,7 +239,7 @@
         .promo-section {
             margin: 1.5rem 0;
             padding: 1rem;
-            background: #fff5f0;
+            background: rgba(40, 40, 40, 0.7);
             border-radius: 15px;
             border: 2px dashed #ff6b35;
         }
@@ -270,6 +251,12 @@
             border-radius: 10px;
             margin-bottom: 10px;
             font-size: 1rem;
+            background: rgba(50, 50, 50, 0.8);
+            color: #fff;
+        }
+
+        .promo-input::placeholder {
+            color: #aaa;
         }
 
         .promo-btn {
@@ -290,7 +277,7 @@
         }
 
         .buy-now-section {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             padding: 1.5rem;
             border-radius: 0 0 20px 20px;
             text-align: center;
@@ -298,7 +285,7 @@
 
         .buy-now-btn {
             width: 100%;
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             color: #ff6b35;
             border: none;
             padding: 1rem 2rem;
@@ -313,6 +300,7 @@
         .buy-now-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: #fff;
         }
 
         .total-display {
@@ -331,18 +319,19 @@
         .empty-cart {
             text-align: center;
             padding: 3rem;
-            color: #666;
+            color: #aaa;
         }
 
         .empty-cart-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
+            color: #ff6b35;
         }
 
         .promo-applied {
-            background: #d4edda;
+            background: rgba(40, 167, 69, 0.2);
             border-color: #28a745;
-            color: #155724;
+            color: #28a745;
         }
 
         @media (max-width: 768px) {
@@ -375,7 +364,7 @@
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
+            border: 3px solid #333;
             border-top: 3px solid #ff6b35;
             border-radius: 50%;
             width: 30px;
@@ -388,19 +377,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        a {
+            text-decoration: none;
+        }
     </style>
-<body>
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">CrunchCart</div>
-                <div class="cart-info">
-                    <span>🛒 Cart</span>
-                    <div class="cart-count" id="cartCount">3</div>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <main class="main-content">
         <div class="container">
@@ -519,5 +500,165 @@
         </div>
     </main>
 
-    
+    <script>
+        // Cart functionality
+        function updateQuantity(itemId, change) {
+            const item = document.querySelector(`.item[data-id="${itemId}"]`);
+            const quantityElement = item.querySelector('.quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            
+            quantity += change;
+            
+            // Ensure quantity doesn't go below 1
+            if (quantity < 1) quantity = 1;
+            
+            quantityElement.textContent = quantity;
+            updateCartTotal();
+            
+            // Update cart count in header
+            updateCartCount();
+        }
+        
+        function removeItem(itemId) {
+            const item = document.querySelector(`.item[data-id="${itemId}"]`);
+            
+            // Add fade-out animation
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(50px)';
+            item.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                item.remove();
+                updateCartTotal();
+                updateCartCount();
+                
+                // Check if cart is empty
+                if (document.querySelectorAll('.item').length === 0) {
+                    showEmptyCart();
+                }
+            }, 300);
+        }
+        
+        function updateCartTotal() {
+            // Calculate subtotal
+            let subtotal = 0;
+            document.querySelectorAll('.item').forEach(item => {
+                const price = parseFloat(item.querySelector('.item-price').textContent.replace('$', ''));
+                const quantity = parseInt(item.querySelector('.quantity').textContent);
+                subtotal += price * quantity;
+            });
+            
+            // Update subtotal
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            
+            // Calculate tax (10%)
+            const tax = subtotal * 0.1;
+            document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+            
+            // Shipping is fixed at $4.99
+            const shipping = 4.99;
+            
+            // Check if discount is applied
+            let discount = 0;
+            const discountRow = document.getElementById('discountRow');
+            if (discountRow.style.display !== 'none') {
+                discount = parseFloat(document.getElementById('discount').textContent.replace('-$', ''));
+            }
+            
+            // Calculate total
+            const total = subtotal + tax + shipping - discount;
+            document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
+            document.getElementById('finalTotal').textContent = '$' + total.toFixed(2);
+        }
+        
+        function updateCartCount() {
+            let totalItems = 0;
+            document.querySelectorAll('.item').forEach(item => {
+                totalItems += parseInt(item.querySelector('.quantity').textContent);
+            });
+            
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+        
+        function showEmptyCart() {
+            const cartItems = document.querySelector('.cart-items');
+            cartItems.innerHTML = `
+                <div class="cart-header">
+                    <h2>🥨 Your Selected Snacks</h2>
+                    <p>Crispy, crunchy, and absolutely delicious!</p>
+                </div>
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h3>Your cart is empty</h3>
+                    <p>Looks like you haven't added any snacks to your cart yet.</p>
+                    <a href="/products" style="display: inline-block; margin-top: 1rem; background: #ff6b35; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none;">Browse Products</a>
+                </div>
+            `;
+        }
+        
+        function applyPromoCode() {
+            const promoCode = document.getElementById('promoCode').value.trim();
+            const promoSection = document.querySelector('.promo-section');
+            const discountRow = document.getElementById('discountRow');
+            const discountElement = document.getElementById('discount');
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('cartLayout').style.opacity = '0.5';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('cartLayout').style.opacity = '1';
+                
+                if (promoCode.toUpperCase() === 'CRUNCH20') {
+                    // Apply 20% discount
+                    const subtotal = parseFloat(document.getElementById('subtotal').textContent.replace('$', ''));
+                    const discount = subtotal * 0.2;
+                    
+                    // Show discount row
+                    discountRow.style.display = 'flex';
+                    discountElement.textContent = '-$' + discount.toFixed(2);
+                    
+                    // Update promo section style
+                    promoSection.classList.add('promo-applied');
+                    document.getElementById('promoCode').disabled = true;
+                    document.querySelector('.promo-btn').textContent = 'Applied ✓';
+                    document.querySelector('.promo-btn').disabled = true;
+                    
+                    // Update total
+                    updateCartTotal();
+                } else {
+                    // Invalid promo code
+                    promoSection.style.borderColor = '#dc3545';
+                    document.getElementById('promoCode').style.borderColor = '#dc3545';
+                    
+                    // Show error message
+                    const errorMsg = document.createElement('p');
+                    errorMsg.textContent = 'Invalid promo code. Try CRUNCH20';
+                    errorMsg.style.color = '#dc3545';
+                    errorMsg.style.marginTop = '5px';
+                    errorMsg.style.fontSize = '0.9rem';
+                    
+                    // Remove any existing error message
+                    const existingError = promoSection.querySelector('p');
+                    if (existingError) existingError.remove();
+                    
+                    promoSection.appendChild(errorMsg);
+                }
+            }, 1000);
+        }
+        
+        function checkout() {
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('cartLayout').style.opacity = '0.5';
+            
+            // Simulate checkout process
+            setTimeout(() => {
+                window.location.href = '/order';
+            }, 1500);
+        }
+    </script>
 {% endblock content %}

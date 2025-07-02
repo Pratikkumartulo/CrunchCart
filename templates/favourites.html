@@ -3,6 +3,157 @@
 {% block content %}
 <link rel="stylesheet" href="../static/css/fav.css">
 
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        text-align: center;
+        padding: 80px 20px 30px;
+    }
+
+    .header h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: #ff6b35; /* Fallback color */
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        -webkit-background-clip: text;
+        background-clip: text; /* Standard property */
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        color: #e0e0e0;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .scroll-wrapper {
+        position: relative;
+        margin: 40px auto;
+        max-width: 1100px;
+    }
+
+    .chips-container {
+        display: flex;
+        gap: 30px;
+        padding: 20px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        background: rgba(30, 30, 30, 0.6);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 107, 53, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+    }
+
+    .chips-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .chip-packet {
+        width: 220px;
+        height: 300px;
+        background: #ffffff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .chip-packet:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 15px 35px rgba(255, 107, 53, 0.3);
+    }
+
+    .chip-packet img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    .chip-packet:hover img {
+        transform: scale(1.08);
+    }
+
+    .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        color: white;
+        border: none;
+        font-size: 1.5rem;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .scroll-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    }
+
+    .scroll-btn.left {
+        left: -25px;
+    }
+
+    .scroll-btn.right {
+        right: -25px;
+    }
+
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 2.5rem;
+        }
+
+        .chip-packet {
+            width: 180px;
+            height: 260px;
+        }
+
+        .chips-container {
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .scroll-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
 <div class="container">
     <div class="header">
         <h1>Discover Your<br>Favorite Flavors</h1>
@@ -25,4 +176,16 @@
         <button class="scroll-btn right" onclick="scrollRight()">&#10095;</button>
     </div>
 </div>
+
+<script>
+    function scrollLeft() {
+        const container = document.getElementById('chipsContainer');
+        container.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+
+    function scrollRight() {
+        const container = document.getElementById('chipsContainer');
+        container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+</script>
 {% endblock content %}

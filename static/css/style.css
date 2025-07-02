@@ -34,6 +34,12 @@
     display: flex;
     list-style: none;
     gap: 2.5rem;
+    align-items: center;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
 }
 
 .nav-links a {
@@ -73,6 +79,113 @@
     color: #ff6b35;
 }
 
+/* Enhanced Login Button Styles */
+.login-button-container {
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+}
+
+.login-button {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease !important;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: auto;
+    line-height: normal;
+}
+
+.login-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4) !important;
+    background: linear-gradient(135deg, #f7931e, #ff6b35) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.login-button:active {
+    transform: translateY(1px) !important;
+}
+
+.login-icon {
+    font-size: 0.9rem;
+    margin-right: 2px;
+}
+
+.login-text {
+    position: relative;
+    z-index: 2;
+}
+
+.login-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+    transition: all 0.7s ease;
+}
+
+.login-button:hover .login-shine {
+    left: 150%;
+    transition: all 0.7s ease;
+}
+
+/* Remove the pulse animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(255, 107, 53, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
+    }
+}
+
+/* Apply subtle pulse animation only on larger screens */
+@media (min-width: 768px) {
+    .login-button {
+        animation: pulse 3s infinite;
+    }
+    
+    .login-button:hover {
+        animation: none;
+    }
+}
+
+/* Ensure the login button fits well in mobile view */
+@media (max-width: 768px) {
+    .login-button-container {
+        margin: 5px 0;
+    }
+    
+    .login-button {
+        width: auto;
+        justify-content: center;
+        padding: 6px 12px !important;
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .nav-links {
@@ -100,5 +213,98 @@
 @media (max-width: 480px) {
     .nav-container {
         padding: 0 1rem;
+    }
+}
+
+/* Footer Styles - Updated for full width */
+.site-footer {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    padding: 3rem 1rem 1rem;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    left: 0;
+    right: 0;
+}
+
+.site-footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.site-footer-brand {
+    flex: 1 1 300px;
+}
+
+.site-footer-links {
+    flex: 1 1 200px;
+}
+
+.site-footer-contact {
+    flex: 1 1 200px;
+}
+
+.site-footer-brand h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.site-footer-brand p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.site-footer-links h4,
+.site-footer-contact h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.site-footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.site-footer-links ul li {
+    margin-bottom: 0.5rem;
+}
+
+.site-footer-links ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.site-footer-links ul li a:hover {
+    color: #ffd8a6;
+}
+
+.site-footer-contact p {
+    margin-bottom: 0.5rem;
+}
+
+.site-footer-bottom {
+    text-align: center;
+    padding-top: 1rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+    .site-footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
     }
 }

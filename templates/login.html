@@ -3,6 +3,146 @@
 {% block content %}
 <link rel="stylesheet" href="static/css/login.css">
 
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .login-container {
+        background: rgba(30, 30, 30, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+        border: 1px solid rgba(255, 107, 53, 0.1);
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    h2 {
+        color: #ff6b35;
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #e0e0e0;
+        font-weight: 500;
+    }
+
+    /* Fix for input fields to ensure consistent width */
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px solid #444;
+        background-color: rgba(50, 50, 50, 0.8);
+        color: #e0e0e0;
+        font-size: 1rem;
+        transition: all 0.3s;
+        box-sizing: border-box;
+        display: block; /* Ensures block-level display */
+        margin: 0; /* Reset any margin */
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="text"]:focus {
+        border-color: #ff6b35;
+        outline: none;
+        box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+    }
+
+    input[type="email"]::placeholder,
+    input[type="password"]::placeholder,
+    input[type="text"]::placeholder {
+        color: #888;
+    }
+
+    /* Fix for remember me checkbox */
+    .remember-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    .btn-login {
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        color: white;
+        border: none;
+        padding: 12px 0;
+        width: 100%;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-login:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    }
+
+    .bottom-text {
+        margin-top: 25px;
+        color: #aaa;
+    }
+
+    .bottom-text a {
+        color: #ff6b35;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .bottom-text a:hover {
+        color: #f7931e;
+        text-decoration: underline;
+    }
+</style>
+
 <div class="login-container">
     <h2>Welcome to CrunchCart!</h2>
 
@@ -10,22 +150,22 @@
         {{ form.hidden_tag() }}
 
         <div class="form-group">
-            {{ form.email.label }}<br>
-            {{ form.email(size=32, placeholder='Enter your email') }}
+            {{ form.email.label }}
+            {{ form.email(placeholder='Enter your email') }}
         </div>
 
         <div class="form-group">
-            {{ form.password.label }}<br>
-            {{ form.password(size=32, placeholder='Enter your password') }}
+            {{ form.password.label }}
+            {{ form.password(placeholder='Enter your password') }}
         </div>
 
-        <div class="form-group">
+        <div class="remember-group">
             {{ form.remember }} {{ form.remember.label }}
         </div>
 
-        <button type="submit" class="btn-login">Login to CrunchArt</button>
+        <button type="submit" class="btn-login">Login to CrunchCart</button>
         <div class="bottom-text">
-            New to CrunchArt? <a href="{{url_for('signup')}}">Create Account</a>
+            New to CrunchCart? <a href="{{url_for('signup')}}">Create Account</a>
         </div>
     </form>
 </div>
