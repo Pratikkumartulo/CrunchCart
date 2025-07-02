@@ -163,6 +163,105 @@
     * {
         box-sizing: border-box;
     }
+
+    .product-summary {
+        margin-bottom: 30px;
+    }
+    
+    .product-card {
+        display: flex;
+        background: rgba(50, 50, 50, 0.7);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .product-image {
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #ffecb3 0%, #ffe0b2 100%);
+        padding: 10px;
+    }
+    
+    .product-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .product-details {
+        flex: 1;
+        padding: 15px;
+    }
+    
+    .product-name {
+        font-size: 1.2rem;
+        color: #fff;
+        margin: 0 0 8px 0;
+    }
+    
+    .product-description {
+        font-size: 0.9rem;
+        color: #ccc;
+        margin: 0 0 12px 0;
+    }
+    
+    .product-price-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+    }
+    
+    .discounted-price, .price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #ff6b35;
+    }
+    
+    .discount-badge {
+        background: #ff6b35;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+    
+    .order-total {
+        margin-top: 20px;
+        background: rgba(40, 40, 40, 0.7);
+        border-radius: 10px;
+        padding: 15px;
+    }
+    
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .total-row:last-child {
+        border-bottom: none;
+    }
+    
+    .grand-total {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #ff6b35;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 107, 53, 0.3);
+    }
 </style>
 
 <div class="order-container">
@@ -172,8 +271,34 @@
             <p>Complete your order and get your favorite chips delivered fresh to your door!</p>
         </div>
 
+        <!-- Product Summary Section -->
+        <div class="form-section product-summary">
+            <h4 class="form-section-title">
+                <i class="fas fa-shopping-bag"></i>
+                Order Summary
+            </h4>
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="../static/images/{{ product.image_url }}" alt="{{ product.name }}">
+                </div>
+                <div class="product-details">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+                    <div class="product-price-info">
+                        {% if product.discount > 0 %}
+                            <span class="original-price">₹{{ product.price }}</span>
+                            <span class="discounted-price amount">₹{{ product.price - (product.price * product.discount / 100) }}</span>
+                            <span class="discount-badge">{{ product.discount }}% OFF</span>
+                        {% else %}
+                            <span class="price amount">₹{{ product.price }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="order-form">
-            <form method="POST" action="{{ url_for('order') }}">
+            <form method="POST" action="{{ url_for('order', product_id=product.id) }}">
                 {{ form.hidden_tag() }}
 
                 <div class="form-section">
@@ -182,7 +307,7 @@
                         Contact Information
                     </h4>
                     <label class="form-label">{{ form.email.label() }}</label>
-                    {{ form.email(class="form-control", placeholder="your@email.com") }}
+                    {{ form.email(class="form-control", placeholder="your@email.com", value=user['email'], readonly=true) }}
 
                     <label class="form-label">{{ form.contact.label() }}</label>
                     {{ form.contact(class="form-control", placeholder="+1 (555) 123-4567") }}
@@ -206,6 +331,37 @@
                     {{ form.zip_code(class="form-control", placeholder="10001") }}
                 </div>
 
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-shopping-cart"></i>
+                        Order Details
+                    </h4>
+                    <label class="form-label">{{ form.quantity.label() }}</label>
+                    {{ form.quantity(class="form-control", onChange="updateTotal()") }}
+                </div>
+
+                <!-- Order Total Section (moved to bottom) -->
+                <div class="form-section">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-calculator"></i>
+                        Order Total
+                    </h4>
+                    <div class="order-total">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span class="subtotal">₹{{ product.price - (product.price * product.discount / 100) }}</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Shipping:</span>
+                            <span>₹40.00</span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>Total:</span>
+                            <span class="total">₹{{ (product.price - (product.price * product.discount / 100)) + 40 }}</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     {{ form.submit(class="place-order-btn", value="Place Order") }}
                 </div>
@@ -213,5 +369,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updateTotal() {
+        var quantity = document.querySelector('select[name="quantity"]').value;
+        var basePrice = document.querySelector('.amount').textContent.replace('₹', '');
+        basePrice = parseFloat(basePrice);
+        total = basePrice * quantity + 40;
+        document.querySelector('.total').textContent = '₹' + total.toFixed(2);
+        document.querySelector('.subtotal').textContent = '₹' + (basePrice * quantity).toFixed(2);
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        updateTotal();
+    });
+</script>
 
 {% endblock content %}

@@ -1,9 +1,9 @@
 from db import db
 from flask import Flask, flash, render_template, redirect, url_for,flash
-from flask_sqlalchemy import SQLAlchemy
-from forms import SignupForm, LoginForm, OrderForm
+from forms import SignupForm, LoginForm, OrderForm, CartOrderForm
 from chips import chipsData,findMaxThreeDiscount
-from users import addUser,validateUser,addSession,isLoggedIn,logoutUser,add_To_cart
+from users import addUser, getAllUsers,validateUser,addSession,isLoggedIn,logoutUser,add_To_cart,removeFromCart
+from order import getOrderById, makeOrder, getAllOrders
 from config import DATABASE_URI, SECRET_KEY,SQLALCHEMY_TRACK_MODIFICATIONS
 
 app = Flask(__name__)
@@ -88,30 +88,45 @@ def ProductDetail(id):
         flash("You need to login for this action","info")
         return redirect(url_for('login'))
 
-@app.route("/logout")
-def logout():
-    logoutUser()
-    return redirect(url_for('home'))
 
-
-@app.route('/order',methods=['GET','POST'])
-def order():
+@app.route('/order/<int:product_id>',methods=['GET', 'POST'])
+def order(product_id):
+    if product_id not in chipsData:
+        flash("Product not found","error")
+        return redirect(url_for('products'))
+    products = chipsData.get(product_id)
+    products['id'] = product_id
     email = isLoggedIn()
     if not email:
         flash("You need to login for this action","info")
         return redirect(url_for('login')) 
     form = OrderForm()
-    return render_template("order.html",title="order",form=form,user=email)
+    if form.validate_on_submit():
+        makeOrder(
+            user_email=email['email'],
+            contact=form.contact.data,
+            street=form.street.data,
+            city=form.city.data,
+            state=form.state.data,
+            zip_code=form.zip_code.data,
+            quantity=form.quantity.data,
+            item_id=products['id'],
+            price=(products['price'] - (products['price'] * products['discount'] / 100)) * int(form.quantity.data) + 40
+        )
+        flash("Order placed successfully!","success")
+        return redirect(url_for('myOrders'))
+    return render_template("order.html",title="order",form=form,user=email,product=products)
 
 @app.route('/cart')
 def cart():
     email = isLoggedIn()
     if not email:
         flash("You need to login for this action","info")
-        return redirect(url_for('login')) 
-    ids = email['cart'].split(',')
-    # also add id = id in products
-    products = [{"product": chipsData.get(int(id)), "id": int(id)} for id in ids if chipsData.get(int(id))]
+        return redirect(url_for('login'))
+    products=[]
+    if(len(email['cart'])!=0):
+        ids = email['cart'].split(',')
+        products = [{"product": chipsData.get(int(id)), "id": int(id)} for id in ids if chipsData.get(int(id))]
     return render_template("cart.html",title="Cart",user=email,products=products)
 
 @app.route('/add_to_cart/<int:product_id>')
@@ -125,6 +140,95 @@ def add_to_cart(product_id):
     else:
         flash("Product already in cart!","error")
     return redirect(url_for('products'))
+
+@app.route('/myorders')
+def myOrders():
+    email = isLoggedIn()
+    if not email:
+        flash("You need to login for this action", "info")
+        return redirect(url_for('login'))
+    order_ids = []
+    if email['orders']:
+        order_ids = [int(id) for id in email['orders'].split(',') if id]
+    orders = []
+    for id in order_ids:
+         order = getOrderById(id)
+         if order:
+            product = chipsData.get(order['item_id'])
+            if product:
+                order['product_name'] = product['name']
+                order['product_image'] = product['image_url']
+                order['product_price'] = product['price']
+                order['product_discount'] = product['discount']
+                discounted_price = product['price'] - (product['price'] * product['discount'] / 100)
+                order['price'] = discounted_price
+                order['subtotal'] = discounted_price * order['quantity']
+                order['shipping'] = 40
+                order['total'] = order['subtotal'] + order['shipping']
+                order['address'] = f"{order['street']}, {order['city']}, {order['state']} {order['zip_code']}"
+                orders.append(order)
+    
+    return render_template("myOrders.html", title="My Orders", user=email, orders=orders)
+
+
+@app.route("/cartorder/place/<cart_string>", methods=["GET","POST"])
+def cart_order_place(cart_string):
+    email = isLoggedIn()
+    if not email:
+        flash("You need to login for this action", "info")
+        return redirect(url_for('login'))
+    form = CartOrderForm()
+    if form.validate_on_submit():
+        entries = cart_string.split('-')
+        for entry in entries:
+            try:
+                product_id, qty = map(int, entry.split(':'))
+                if product_id not in chipsData:
+                    flash(f"Product with ID {product_id} not found", "error")
+                    continue
+                product_price = chipsData.get(product_id)['price']
+                product_discount = chipsData.get(product_id)['discount']
+                makeOrder(
+                    user_email=form.email.data,
+                    contact=form.contact.data,
+                    street=form.street.data,
+                    city=form.city.data,
+                    state=form.state.data,
+                    zip_code=form.zip_code.data,
+                    quantity=qty,
+                    item_id=product_id,
+                    price= (product_price - (product_price * product_discount / 100) * int(qty)) + 40 
+                )
+            except Exception as e:
+                flash(f"Error processing product {entry}: {str(e)}", "error")
+                continue
+        flash("Order placed successfully!", "success")
+        return redirect(url_for('myOrders'))
+    return render_template("cartorder.html", title="Cart Order", user=email, cart_string=cart_string, form=form)
+
+@app.get("/remove_from_cart/<int:product_id>")
+def remove_from_cart(product_id):
+    email = isLoggedIn()
+    if not email:
+        flash("You need to login for this action", "info")
+        return redirect(url_for('login'))
+    if removeFromCart(product_id):
+        flash("Product removed from cart successfully!", "success")
+    else:
+        flash("Product not found in cart!", "error")
+    return redirect(url_for('cart'))
+
+@app.route("/admin")
+def admin():
+    orders = getAllOrders()
+    users = getAllUsers()
+    print(orders)
+    return render_template('admin.html', title="Admin",orders=orders, users=users)
+
+@app.route("/logout")
+def logout():
+    logoutUser()
+    return redirect(url_for('home'))
 
 with app.app_context():
     db.create_all()

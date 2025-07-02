@@ -69,3 +69,29 @@ window.addEventListener("DOMContentLoaded", () => {
         chipsContainer.scrollBy({ left: 300, behavior: 'smooth' });
     });
 });
+
+// Mobile navigation toggle
+function toggleNav() {
+    const navLinks = document.getElementById("navLinks");
+    navLinks.classList.toggle("show");
+    
+    // Add animation effect
+    const hamburger = document.querySelector(".hamburger");
+    hamburger.classList.toggle("active");
+    
+    // Accessibility
+    const expanded = navLinks.classList.contains("show");
+    hamburger.setAttribute("aria-expanded", expanded);
+}
+
+// Close mobile nav when clicking outside
+document.addEventListener('click', function(e) {
+    const navLinks = document.getElementById("navLinks");
+    const hamburger = document.querySelector(".hamburger");
+    
+    if (navLinks.classList.contains("show") && 
+        !navLinks.contains(e.target) && 
+        !hamburger.contains(e.target)) {
+        toggleNav();
+    }
+});

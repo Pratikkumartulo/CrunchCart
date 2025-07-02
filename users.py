@@ -10,7 +10,7 @@ class User(db.Model):
     dob = db.Column(db.Date)
     password = db.Column(db.String(60))
     cart = db.Column(db.String(255), default="")
-    orders = db.Column(JSON, default=[])
+    orders = db.Column(db.String(255), default="")
 
     def user_Details(self):
         return {
@@ -48,7 +48,9 @@ def add_To_cart(product_id):
         return False
 
 def validateUser(email,password):
+    print("Validate")
     email = User.query.filter_by(email=email).first()
+    print("ValidateUser")
     if not email:
         return False
     if email.password == password:
@@ -61,14 +63,50 @@ def addSession(email):
 
 def isLoggedIn():
     if 'email' in session:
-        user = User.query.filter_by(email=session['email']).first()
-        if not user:
+        try:
+            user = User.query.filter_by(email=session['email']).first()
+            if not user:
+                return None
+            Curruser = user.user_Details()
+            Curruser['email'] = session['email']
+            return Curruser
+        except Exception as e:
             return None
-        Curruser = user.user_Details()
-        Curruser['email'] = session['email']
-        return Curruser
     else:
         return None
+    
+def addOrderId(id):
+    user = User.query.filter_by(email=session['email']).first()
+    if not user:
+        return False
+    orders_list = user.orders.split(",") if user.orders else []
+    if str(id) not in orders_list:
+        orders_list.append(str(id))
+        user.orders = ",".join(orders_list)
+        db.session.commit()
+        return True
+    else:
+        return False
+    
+def removeFromCart(product_id):
+    user = User.query.filter_by(email=session['email']).first()
+    if not user:
+        return False
+    cart_list = user.cart.split(",") if user.cart else []
+    if str(product_id) in cart_list:
+        cart_list.remove(str(product_id))
+        user.cart = ",".join(cart_list)
+        db.session.commit()
+        return True
+    else:
+        return False
+def getAllUsers():
+    users = User.query.all()
+    allUsers = []
+    for user in users:
+        temp = user.user_Details()
+        allUsers.append(temp)
+    return allUsers
     
 def logoutUser():
     session.pop('email', None)

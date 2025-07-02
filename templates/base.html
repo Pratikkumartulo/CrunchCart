@@ -48,8 +48,7 @@
                 <li><a href="{{url_for('contact')}}">Contact</a></li>
                 {% if user %}
                 <li><a href="{{url_for('cart')}}">Cart</a></li>
-                <li><a href="{{url_for('userProfile')}}">Profile</a></li>
-                <li><a href="{{url_for('logout')}}">Logout</a></li>
+                <li><a href="{{url_for('userProfile')}}">Me</a></li>
                 {% else %}
                 <li class="login-button-container">
                     <a href="{{url_for('login')}}" class="login-button">

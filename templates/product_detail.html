@@ -8,20 +8,22 @@
         font-family: 'Inter', sans-serif;
         margin: 0;
         padding: 0;
-        overflow-x: hidden; /* Prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* Prevent horizontal scrollbar */
     }
-    
+
     .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
     }
-    
+
     .product-container {
         display: flex;
         flex-wrap: wrap;
         gap: 40px;
-        margin-top: 80px; /* Increased top margin to add space below navbar */
+        margin-top: 80px;
+        /* Increased top margin to add space below navbar */
         background: rgba(30, 30, 30, 0.6);
         border-radius: 16px;
         padding: 30px;
@@ -29,23 +31,25 @@
         border: 1px solid rgba(255, 107, 53, 0.1);
         backdrop-filter: blur(10px);
     }
-    
+
     .product-image {
         flex: 1;
         min-width: 300px;
         max-width: 400px;
-        background-color: #ffffff; /* White background to match product image */
+        background-color: #ffffff;
+        /* White background to match product image */
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         transition: transform 0.3s ease;
-        padding: 20px; /* Added padding inside the image container */
+        padding: 20px;
+        /* Added padding inside the image container */
     }
-    
+
     .product-image:hover {
         transform: scale(1.02);
     }
-    
+
     .product-image img {
         width: 100%;
         height: auto;
@@ -54,17 +58,17 @@
         transition: transform 0.5s ease;
         object-fit: contain;
     }
-    
+
     .product-image:hover img {
         transform: scale(1.05);
     }
-    
+
     .product-info {
         flex: 1;
         min-width: 300px;
         padding: 10px;
     }
-    
+
     .product-title {
         font-size: 2.5rem;
         margin-bottom: 15px;
@@ -72,24 +76,25 @@
         font-weight: 700;
         background: linear-gradient(135deg, #ff6b35, #f7931e);
         -webkit-background-clip: text;
-        background-clip: text; /* Add standard property */
+        background-clip: text;
+        /* Add standard property */
         -webkit-text-fill-color: transparent;
         text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
     }
-    
+
     .product-description {
         line-height: 1.8;
         margin-bottom: 30px;
         font-size: 1.1rem;
         color: #cccccc;
     }
-    
+
     .ratings {
         margin-bottom: 20px;
         font-size: 1.1rem;
         color: #f7931e;
     }
-    
+
     .product-price {
         font-size: 1.8rem;
         color: #ff6b35;
@@ -99,13 +104,13 @@
         align-items: center;
         gap: 15px;
     }
-    
+
     .old-price {
         text-decoration: line-through;
         color: #888;
         font-size: 1.2rem;
     }
-    
+
     .discount {
         background: linear-gradient(135deg, #ff4500, #ffa500);
         color: white;
@@ -114,7 +119,7 @@
         font-size: 0.9rem;
         font-weight: bold;
     }
-    
+
     .offers {
         background: rgba(20, 20, 20, 0.6);
         padding: 20px;
@@ -122,14 +127,14 @@
         margin-bottom: 30px;
         border-left: 4px solid #ff6b35;
     }
-    
+
     .offers li {
         margin-bottom: 10px;
         list-style-type: none;
         position: relative;
         padding-left: 25px;
     }
-    
+
     .offers li:before {
         content: "✓";
         position: absolute;
@@ -137,82 +142,99 @@
         color: #ff6b35;
         font-weight: bold;
     }
-    
+
     .buy-options {
         display: flex;
-        gap: 15px;
-        margin-top: 30px;
+        gap: 18px;
+        margin-top: 32px;
     }
-    
+
     .btn {
-        padding: 14px 28px;
-        font-size: 1.1rem;
+        padding: 14px 32px;
+        font-size: 1.15rem;
         border-radius: 30px;
         cursor: pointer;
-        transition: all 0.3s ease;
         font-weight: 600;
         border: none;
         display: flex;
         align-items: center;
         gap: 10px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+        transition: all 0.18s;
+        outline: none;
+        text-decoration: none;
+        max-width: 100%;
+        box-sizing: border-box;
     }
-    
-    .add-cart {
-        background: rgba(30, 30, 30, 0.8);
-        color: #ffffff;
-        border: 2px solid #ff6b35;
+
+    .add-cart-btn {
+        background: linear-gradient(135deg, #ff9800 0%, #ff6b35 100%);
+        color: #fff;
+        border: 2px solid #ff9800;
     }
-    
-    .add-cart:hover {
-        background: rgba(255, 107, 53, 0.2);
-        transform: translateY(-5px);
+
+    .add-cart-btn:hover {
+        background: linear-gradient(135deg, #ff6b35 0%, #ff9800 100%);
+        color: #fff;
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(255, 152, 0, 0.18);
     }
-    
-    .buy-now {
-        background: linear-gradient(135deg, #ff6b35, #f7931e);
-        color: white;
+
+    .buy-now-btn {
+        background: linear-gradient(135deg, #43ea7f 0%, #1ebc61 100%);
+        color: #fff;
+        border: 2px solid #1ebc61;
     }
-    
-    .buy-now:hover {
-        background: linear-gradient(135deg, #f7931e, #ff6b35);
-        transform: translateY(-5px);
-        box-shadow: 0 15px 25px rgba(255, 107, 53, 0.4);
+
+    .buy-now-btn:hover {
+        background: linear-gradient(135deg, #1ebc61 0%, #43ea7f 100%);
+        color: #fff;
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(30, 188, 97, 0.18);
     }
-    
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .product-container {
-            padding: 20px;
-            gap: 30px;
+            padding: 10px;
+            gap: 18px;
         }
-        
+
         .product-title {
             font-size: 2rem;
         }
-        
+
         .buy-options {
             flex-direction: column;
+            gap: 12px;
+            width: 100%;
         }
-        
+
         .btn {
             width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding-left: 0;
+            padding-right: 0;
             justify-content: center;
+            font-size: 1rem;
         }
     }
-    
+
     /* Add this to remove underline from links */
     a {
         text-decoration: none;
     }
-    
+
     .buy-options a {
         text-decoration: none;
-        display: inline-block; /* Ensures the link properly contains the button */
+        display: inline-block;
+        /* Ensures the link properly contains the button */
     }
-    
+
     .buy-options a:hover {
-        text-decoration: none; /* Ensure no underline appears on hover */
+        text-decoration: none;
+        /* Ensure no underline appears on hover */
     }
 </style>
 
@@ -226,8 +248,8 @@
         <div class="ratings">⭐⭐⭐⭐☆ 4.2 (10,000+ reviews)</div>
         <p class="product-price">₹{{ chipDet['price'] - (chipDet['price'] * chipDet['discount'] / 100) }}
             {% if chipDet['discount'] > 0 %}
-                <span class="old-price">₹{{ chipDet['price'] }}</span> 
-                <span class="discount">({{ chipDet['discount'] }}% OFF)</span>
+            <span class="old-price">₹{{ chipDet['price'] }}</span>
+            <span class="discount">({{ chipDet['discount'] }}% OFF)</span>
             {% endif %}
         </p>
         <ul class="offers">
@@ -236,8 +258,12 @@
             <li>Free shipping for members</li>
         </ul>
         <div class="buy-options">
-            <a href="{{ url_for('add_to_cart', product_id=id) }}"><button class="add-cart">🛒 Add to Cart</button></a>
-            <a href="{{ url_for('order') }}"><button class="buy-now">⚡ Buy Now</button></a>
+            <a href="{{ url_for('add_to_cart', product_id=id) }}" class="btn add-cart-btn">
+                <span>🛒</span> Add to Cart
+            </a>
+            <a href="{{ url_for('order', product_id=id) }}" class="btn buy-now-btn">
+                <span>⚡</span> Buy Now
+            </a>
         </div>
     </div>
 </div>

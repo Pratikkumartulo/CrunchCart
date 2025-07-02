@@ -58,6 +58,11 @@ class OrderForm(FlaskForm):
         "Email",
         validators=[DataRequired(),Email()]
     )
+    quantity = SelectField(
+        'Quantity',
+        choices=[(str(i), str(i)) for i in range(1, 6)],  # Options 1-5
+        validators=[DataRequired()]
+    )
     contact = StringField(
         'contact',
         validators=[DataRequired(),Length(10)]
@@ -77,5 +82,32 @@ class OrderForm(FlaskForm):
     zip_code = StringField(
         'Zip Code',
         validators=[DataRequired(), Length(6)]
+    )
+    submit = SubmitField("Place Order")
+
+class CartOrderForm(FlaskForm):
+    email = StringField(
+        "Email",
+        validators=[DataRequired(), Email()]
+    )
+    contact = StringField(
+        "Contact",
+        validators=[DataRequired(), Length(min=10, max=10)]
+    )
+    street = StringField(
+        "Street",
+        validators=[DataRequired(), Length(min=5, max=50)]
+    )
+    city = StringField(
+        "City",
+        validators=[DataRequired(), Length(min=3, max=15)]
+    )
+    state = StringField(
+        "State",
+        validators=[DataRequired(), Length(min=3, max=20)]
+    )
+    zip_code = StringField(
+        "Zip Code",
+        validators=[DataRequired(), Length(min=6, max=6)]
     )
     submit = SubmitField("Place Order")
