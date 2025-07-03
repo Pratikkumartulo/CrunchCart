@@ -1,10 +1,12 @@
 from db import db
 from flask import Flask, flash, render_template, redirect, url_for,flash
-from forms import SignupForm, LoginForm, OrderForm, CartOrderForm
+from forms import SignupForm, LoginForm, OrderForm, CartOrderForm, OrderStatusForm, ContactForm, ReviewForm
 from chips import chipsData,findMaxThreeDiscount
-from users import addUser, getAllUsers,validateUser,addSession,isLoggedIn,logoutUser,add_To_cart,removeFromCart
-from order import getOrderById, makeOrder, getAllOrders
-from config import DATABASE_URI, SECRET_KEY,SQLALCHEMY_TRACK_MODIFICATIONS
+from review import addReview, findReviewByOrderId, findReviewsByItemId
+from contact import addContact, getAllContact
+from users import addUser, adminLogin, getAllUsers, isAdmin,validateUser,addSession,isLoggedIn,logoutUser,add_To_cart,removeFromCart,adminLogout
+from order import getOrderById, makeOrder, getAllOrders, changeOrderStatus
+from config import ADMIN_ID, ADMIN_PASS, DATABASE_URI, SECRET_KEY,SQLALCHEMY_TRACK_MODIFICATIONS
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SECRET_KEY
@@ -25,10 +27,21 @@ def about():
     email = isLoggedIn()
     return render_template("about.html",title="About",user=email)
 
-@app.route("/contact") 
+@app.route("/contact", methods=['GET', 'POST']) 
 def contact():
-    email = isLoggedIn()
-    return render_template("contact.html",title="contact",user=email)
+    form = ContactForm()
+    user = isLoggedIn()
+
+    if form.validate_on_submit():
+        contact = addContact(
+            name=form.name.data,
+            email=form.email.data,
+            message=form.message.data
+        )
+        flash("Your message has been sent successfully!", "success")
+        return redirect(url_for("contact"))
+
+    return render_template("contact.html", title="Contact", form=form, user=user)
 
 
 @app.route("/favourites") 
@@ -79,11 +92,12 @@ def signup():
 @app.route("/product/<id>")
 def ProductDetail(id):
     email = isLoggedIn()
+    reviews = findReviewsByItemId(int(id))
     if email:
         chip = chipsData.get(int(id))
         if not chip:
             return redirect(url_for('products'))
-        return render_template('product_detail.html',title=f"CrunchCart - {chip['name']}",chipDet = chip,user=email,id=id)
+        return render_template('product_detail.html',title=f"CrunchCart - {chip['name']}",chipDet = chip,user=email,id=id,reviews=reviews)
     else:
         flash("You need to login for this action","info")
         return redirect(url_for('login'))
@@ -218,12 +232,109 @@ def remove_from_cart(product_id):
         flash("Product not found in cart!", "error")
     return redirect(url_for('cart'))
 
+@app.route("/product/review/<int:order_id>", methods=["GET", "POST"])
+def review(order_id):
+    user = isLoggedIn()
+    if not user:
+        flash("Login required to review.", "error")
+        return redirect(url_for("login"))
+
+    order = getOrderById(order_id)
+    if not order or order['status'].lower() != 'delivered' or order['user_email'] != user['email']:
+        flash("Order not found", "error")
+        return redirect(url_for("myOrders"))
+
+    item = chipsData.get(order["item_id"])
+    form = ReviewForm()
+
+    if form.validate_on_submit():
+        addReview(
+            user_email=user["email"],
+            item_id=order["item_id"],
+            order_id=order_id,
+            rating=int(form.rating.data),
+            content=form.content.data
+        )
+        flash("Review submitted!", "success")
+        return redirect(url_for("myOrders"))
+
+    return render_template("review.html", title="Review Product", form=form, order=order, item=item, user=user)
+
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def adminsLogin():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.email.data == ADMIN_ID and form.password.data == ADMIN_PASS:
+            adminLogin()
+            flash('Admin login successful!', 'success')
+            return redirect(url_for('admin'))
+    return render_template('adminLogin.html', title="Admin Login", form=form)
+
 @app.route("/admin")
 def admin():
+    if not isAdmin():
+        flash("You are not authorized to access this page.", "error")
+        return redirect(url_for('adminsLogin'))
     orders = getAllOrders()
     users = getAllUsers()
-    print(orders)
     return render_template('admin.html', title="Admin",orders=orders, users=users)
+
+@app.route("/admin/orders")
+def adminOrders():
+    if not isAdmin():
+        flash("You are not authorized to access this page.", "error")
+        return redirect(url_for('adminsLogin'))
+    orders = getAllOrders()
+    return render_template('recentorders.html', title="Admin Orders", orders=orders)
+
+@app.route("/admin/topproducts")
+def adminTopProducts():
+    if not isAdmin():
+        flash("You are not authorized to access this page.", "error")
+        return redirect(url_for('adminsLogin'))
+    discounted = findMaxThreeDiscount(chipsData)
+    return render_template('topproducts.html', title="Top Products", chips=discounted)
+
+@app.route("/admin/allorders")
+def AllAdminOrder():
+    if not isAdmin():
+        flash("You are not authorized to access this page.", "error")
+        return redirect(url_for('adminsLogin'))
+    orders = getAllOrders()
+    return render_template('allorders.html', title="Admin Orders", orders=orders)
+
+@app.route("/admin/order/<int:order_id>", methods=["GET", "POST"])
+def adminOrderDetail(order_id):
+    if not isAdmin():
+        flash("You are not authorized to access this page.", "error")
+        return redirect(url_for('adminsLogin'))
+    order = getOrderById(order_id)
+    review = findReviewByOrderId(order_id)
+    item = chipsData.get(order['item_id']) if order else None
+    print(item)
+    if not order:
+        flash("Order not found!", "error")
+        return redirect(url_for('adminTopProducts'))
+
+    form = OrderStatusForm()
+    if form.validate_on_submit():
+        changeOrderStatus(order_id, form.status.data)
+        flash("Order status updated successfully!", "success")
+        return redirect(url_for("adminOrderDetail", order_id=order_id))
+
+    return render_template("Orderdetails.html", title="Order Detail", order=order, form=form, item=item, review=review)
+
+@app.route("/admin/logout")
+def adminsLogout():
+    adminLogout()
+    flash("Admin logged out successfully!", "success")
+    return redirect(url_for('adminsLogin'))
+
+@app.route("/admin/allmessages")
+def adminMessages():
+    messages = getAllContact()
+    return render_template("adminMessage.html", title="All Messages", messages=messages)
 
 @app.route("/logout")
 def logout():
@@ -232,7 +343,6 @@ def logout():
 
 with app.app_context():
     db.create_all()
-
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,163 @@
+{% extends "adminbase.html" %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #232526 0%, #ff6b35 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-login-wrapper {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            background: linear-gradient(135deg, #232526 0%, #ff6b35 100%);
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 100;
+        }
+        .admin-login-card {
+            background: rgba(30, 30, 30, 0.92);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.18);
+            padding: 48px 36px 36px 36px;
+            max-width: 370px;
+            width: 100%;
+            border: 1.5px solid rgba(255, 107, 53, 0.13);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .admin-login-card .icon {
+            font-size: 3.2rem;
+            color: #ff6b35;
+            margin-bottom: 0.7rem;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+            padding: 18px;
+            box-shadow: 0 2px 12px rgba(255, 107, 53, 0.10);
+        }
+        .admin-login-card h2 {
+            color: #fff;
+            font-size: 2.1rem;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .admin-login-card form {
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #ff6b35;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 13px 12px;
+            font-size: 1rem;
+            border: 1.5px solid #444;
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+            border-radius: 9px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+            outline: none;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+            color: #fff;
+            border: none;
+            border-radius: 11px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.18s, box-shadow 0.18s;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 16px rgba(255, 107, 53, 0.10);
+            letter-spacing: 0.5px;
+        }
+        .btn-login:hover {
+            background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.18);
+        }
+        .footer-text {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.97rem;
+            color: #bbb;
+            letter-spacing: 0.2px;
+        }
+        .input-admin {
+            width: 100%;
+            padding: 13px 12px;
+            font-size: 1rem;
+            border: 1.5px solid #444;
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+            border-radius: 9px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 0.5rem;
+            box-sizing: border-box;
+        }
+        .input-admin:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+            outline: none;
+        }
+        @media (max-width: 500px) {
+            .admin-login-card {
+                padding: 32px 10px 24px 10px;
+                border-radius: 14px;
+            }
+            .admin-login-card h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="admin-login-wrapper">
+    <div class="admin-login-card">
+        <div class="icon"><i class="fas fa-user-shield"></i></div>
+        <h2>Admin Login</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class_="input-admin", placeholder="Enter admin email") }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class_="input-admin", placeholder="Enter password") }}
+            </div>
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+        <div class="footer-text">
+            <i class="fas fa-lock"></i> Only authorized users allowed
+        </div>
+    </div>
+</div>
+{% endblock content %}

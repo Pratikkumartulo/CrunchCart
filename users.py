@@ -1,4 +1,5 @@
 from flask import session
+from config import ADMIN_ID
 from db import db
 from sqlalchemy.dialects.mysql import JSON
 
@@ -107,7 +108,22 @@ def getAllUsers():
         temp = user.user_Details()
         allUsers.append(temp)
     return allUsers
-    
+
+def adminLogin():
+    session['adminEmail'] = ADMIN_ID
+    session['isAdmin'] = True
+    return True
+
+def isAdmin():
+    if 'isAdmin' in session and session['isAdmin']:
+        return True
+    return False
+
+def adminLogout():
+    session.pop('adminEmail', None)
+    session.pop('isAdmin', None)
+    return True
+
 def logoutUser():
     session.pop('email', None)
     return True

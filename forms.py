@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,SelectField,DateField,PasswordField,SubmitField,BooleanField,IntegerField
+from wtforms import StringField,SelectField,DateField,PasswordField,SubmitField,BooleanField,IntegerField, TextAreaField
 from wtforms.validators import DataRequired,Length,Email,optional,EqualTo
 
 class SignupForm(FlaskForm):
@@ -111,3 +111,32 @@ class CartOrderForm(FlaskForm):
         validators=[DataRequired(), Length(min=6, max=6)]
     )
     submit = SubmitField("Place Order")
+
+class OrderStatusForm(FlaskForm):
+    status = SelectField(
+        "Update Status",
+        choices=[
+            ("Pending", "Pending"),
+            ("Processing", "Processing"),
+            ("Shipped", "Shipped"),
+            ("Delivered", "Delivered"),
+            ("Cancelled", "Cancelled")
+        ],
+        validators=[DataRequired()]
+    )
+    submit = SubmitField("Update Status")
+
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(2, 50)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    message = TextAreaField('Message', validators=[DataRequired(), Length(10, 1000)])
+    submit = SubmitField('Send Message')
+
+class ReviewForm(FlaskForm):
+    rating = SelectField(
+        "Rating",
+        choices=["5","4","3","2","1"],
+        validators=[DataRequired()]
+    )
+    content = TextAreaField("Review", validators=[DataRequired(), Length(min=10)])
+    submit = SubmitField("Submit Review")

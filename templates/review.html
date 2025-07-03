@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+body {
+    background: linear-gradient(135deg, #181818 0%, #232526 100%);
+}
+
+.review-container {
+    max-width: 420px;
+    margin: 3.5rem auto 2rem auto;
+    background: rgba(30, 30, 30, 0.98);
+    padding: 2.2rem 2rem 1.5rem 2rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.13);
+    color: #fff;
+    border: 1.5px solid rgba(255, 107, 53, 0.10);
+    backdrop-filter: blur(6px);
+}
+
+.product-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 2rem;
+}
+
+.product-info img {
+    width: 82px;
+    height: 82px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #ff6b35;
+    background: #222;
+    box-shadow: 0 2px 10px rgba(255, 107, 53, 0.08);
+}
+
+.product-info h3 {
+    color: #ff6b35;
+    margin-bottom: 0.3rem;
+    font-size: 1.18rem;
+    font-weight: 700;
+}
+
+.product-info p {
+    color: #bbb;
+    margin: 0.1rem 0 0.2rem 0;
+    font-size: 0.98rem;
+}
+
+.review-title {
+    color: #ffa500;
+    margin-bottom: 1.1rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.form-group label {
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #ff6b35;
+    font-size: 1.03rem;
+}
+
+.form-control {
+    width: 100%;
+    background: #232323;
+    color: #fff;
+    padding: 0.85rem 1rem;
+    border-radius: 9px;
+    border: 1.5px solid #444;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 0.1rem;
+    box-sizing: border-box;
+}
+.form-control:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.13);
+    outline: none;
+}
+
+.btn-warning {
+    background: linear-gradient(90deg, #ff6b35 0%, #ffa500 100%);
+    border: none;
+    padding: 0.9rem 0;
+    font-weight: bold;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.08rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: background 0.2s, transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.10);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+.btn-warning:hover {
+    background: linear-gradient(90deg, #ffa500 0%, #ff6b35 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.18);
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    .review-container {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+        border-radius: 12px;
+        max-width: 98vw;
+    }
+    .product-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+    }
+    .product-info img {
+        margin-bottom: 0.5rem;
+    }
+}
+</style>
+
+<div class="review-container">
+    <!-- Product & Order Info -->
+    <div class="product-info">
+        <img src="{{ url_for('static', filename='images/' ~ item.image_url) }}" alt="{{ item.name }}">
+        <div>
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+            <p><strong>Total Price:</strong> ₹{{ order.price }}</p>
+            <p><strong>Delivered On:</strong> {{ order.timestamp }}</p>
+        </div>
+    </div>
+
+    <!-- Review Form -->
+    <h4 class="review-title">Write a Review</h4>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.rating.label }}
+            {{ form.rating(class_="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.content.label }}
+            {{ form.content(rows="5", class_="form-control") }}
+        </div>
+
+        {{ form.submit(class_="btn btn-warning") }}
+    </form>
+</div>
+{% endblock %}

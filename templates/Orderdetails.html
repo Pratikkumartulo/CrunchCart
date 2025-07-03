@@ -1,0 +1,247 @@
+{% extends "adminbase.html" %}
+
+{% block content %}
+<style>
+    .order-detail-container {
+        max-width: 900px;
+        margin: 4rem auto;
+        padding: 40px;
+        background: rgba(30, 30, 30, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 12px 25px rgba(255, 107, 53, 0.2);
+        border: 1px solid rgba(255, 107, 53, 0.1);
+    }
+
+    .order-detail-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .order-detail-header h2 {
+        color: #ff6b35;
+        font-size: 2rem;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .product-card {
+        display: flex;
+        background: #1f1f1f;
+        border: 1px solid #333;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 2rem;
+        gap: 20px;
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.1);
+    }
+
+    .product-image {
+        flex: 0 0 120px;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        border: 2px solid #ffb300;
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+
+    .product-details {
+        flex: 1;
+    }
+
+    .product-details h3 {
+        color: #ff6b35;
+        margin-bottom: 8px;
+    }
+
+    .product-details p {
+        color: #ccc;
+        font-size: 1rem;
+        margin: 6px 0;
+    }
+
+    .product-details .price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #f7931e;
+        margin-top: 10px;
+    }
+
+    .order-info {
+        color: #ddd;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+    }
+
+    .order-info span {
+        color: #ff6b35;
+        font-weight: 600;
+    }
+
+    .form-section {
+        margin-top: 2rem;
+        background: #1f1f1f;
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid #444;
+    }
+
+    label {
+        color: #ccc;
+        margin-bottom: 8px;
+        display: block;
+        font-weight: 500;
+    }
+
+    select, .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #555;
+        background: #2a2a2a;
+        color: white;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+    select:focus {
+        border-color: #ff6b35;
+        box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.3);
+        outline: none;
+    }
+
+    .btn-update {
+        margin-top: 20px;
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-update:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-update:disabled {
+        background: #888 !important;
+        color: #fff !important;
+        cursor: not-allowed !important;
+        opacity: 0.7;
+        box-shadow: none;
+        border: none;
+        text-decoration: line-through;
+    }
+
+    .user-review-card {
+        margin-top: 2.5rem;
+    }
+
+    .user-review-card h4 {
+        color: #ffa500;
+        margin-bottom: 0.7rem;
+    }
+
+    .user-review-card .review-content {
+        background: rgba(34, 34, 34, 0.98);
+        border-radius: 12px;
+        padding: 1.2rem 1rem;
+        border: 1.5px solid #ff6b35;
+        box-shadow: 0 2px 12px rgba(255, 107, 53, 0.08);
+    }
+
+    .user-review-card .review-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0.5rem;
+    }
+
+    .user-review-card .review-header span {
+        font-size: 1.1rem;
+        color: #ffb300;
+    }
+
+    .user-review-card .review-header span.rating {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    .user-review-card .review-header span.by {
+        color: #bbb;
+        font-size: 0.97rem;
+    }
+
+    .user-review-card .review-content {
+        color: #fff;
+        font-size: 1.05rem;
+    }
+</style>
+
+<div class="order-detail-container">
+    <div class="order-detail-header">
+        <h2>Order #{{ order.id }}</h2>
+    </div>
+
+    <!-- Product Information Card -->
+    {% if item %}
+    <div class="product-card">
+        <div class="product-image">
+            <img src="{{ url_for('static', filename='images/' ~ item.image_url) }}" alt="{{ item.name }}">
+        </div>
+        <div class="product-details">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            {% if item.discount > 0 %}
+                <p class="price">₹ {{ "%.2f"|format(item.price - (item.price * item.discount / 100)) }} <small style="color:#aaa;text-decoration:line-through;">₹{{ item.price }}</small></p>
+            {% else %}
+                <p class="price">₹ {{ item.price }}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Order Info -->
+    <div class="order-info">
+        <p><span>User Email:</span> {{ order.user_email }}</p>
+        <p><span>Contact:</span> {{ order.contact }}</p>
+        <p><span>Address:</span> {{ order.street }}, {{ order.city }}, {{ order.state }} - {{ order.zip_code }}</p>
+        <p><span>Quantity Ordered:</span> {{ order.quantity }}</p>
+        <p><span>Subtotal:</span> ₹ {{ order.price }}</p>
+        <p><span>Placed On:</span> {{ order.timestamp }}</p>
+        <p><span>Current Status:</span> {{ order.status }}</p>
+    </div>
+
+    <!-- Update Status Form -->
+    <div class="form-section">
+        <form method="POST" action="{{ url_for('adminOrderDetail', order_id=order.id) }}">
+            {{ form.hidden_tag() }}
+            <label for="status">{{ form.status.label }}</label>
+            {{ form.status(class="form-control", value=order.status) }}
+            {{ form.submit(class_="btn-update", disabled=True if order.status == "Delivered" or order.status == "Cancelled" else False) }}
+        </form>
+    </div>
+
+    <!-- User Review Section -->
+    {% if review %}
+    <div class="user-review-card" style="margin-top:2.5rem;">
+        <h4 style="color:#ffa500; margin-bottom:0.7rem;"><i class="fas fa-user-edit"></i> Customer's Review</h4>
+        <div style="background:rgba(34,34,34,0.98); border-radius:12px; padding:1.2rem 1rem; border:1.5px solid #ff6b35; box-shadow:0 2px 12px rgba(255,107,53,0.08);">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.5rem;">
+                <span style="font-size:1.1rem; color:#ffb300;"><i class="fas fa-star"></i> {{ review.rating }}/5</span>
+                <span style="color:#bbb; font-size:0.97rem;">by {{ review.user_email }}</span>
+            </div>
+            <div style="color:#fff; font-size:1.05rem;">{{ review.content }}</div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

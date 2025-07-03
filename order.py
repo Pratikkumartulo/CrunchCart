@@ -72,3 +72,11 @@ def getAllOrders():
         temp['price'] = order.price
         allOrders.append(temp)
     return allOrders
+
+def changeOrderStatus(order_id, status):
+    order = Orders.query.get(order_id)
+    if order:
+        order.status = status
+        db.session.commit()
+        return True
+    return False

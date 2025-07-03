@@ -7,30 +7,30 @@
         background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
         color: #e0e0e0;
     }
-    
+
     .orders-container {
         max-width: 1200px;
         margin: 80px auto;
         padding: 20px;
     }
-    
+
     .orders-header {
         text-align: center;
         margin-bottom: 40px;
     }
-    
+
     .orders-header h1 {
         font-size: 2.5rem;
         color: #ff6b35;
         margin-bottom: 10px;
         text-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);
     }
-    
+
     .orders-header p {
         color: #ccc;
         font-size: 1.1rem;
     }
-    
+
     .no-orders {
         background: rgba(30, 30, 30, 0.7);
         border-radius: 10px;
@@ -38,25 +38,25 @@
         text-align: center;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-    
+
     .no-orders i {
         font-size: 4rem;
         color: #555;
         margin-bottom: 20px;
         display: block;
     }
-    
+
     .no-orders h3 {
         font-size: 1.5rem;
         color: #ddd;
         margin-bottom: 15px;
     }
-    
+
     .no-orders p {
         color: #aaa;
         margin-bottom: 25px;
     }
-    
+
     .no-orders a {
         display: inline-block;
         background: #ff6b35;
@@ -67,13 +67,13 @@
         font-weight: bold;
         transition: all 0.3s ease;
     }
-    
+
     .no-orders a:hover {
         background: #ff8c5a;
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(255, 107, 53, 0.4);
     }
-    
+
     .order-card {
         background: rgba(30, 30, 30, 0.7);
         border-radius: 10px;
@@ -82,11 +82,11 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s ease;
     }
-    
+
     .order-card:hover {
         transform: translateY(-5px);
     }
-    
+
     .order-header {
         background: rgba(40, 40, 40, 0.8);
         padding: 15px 20px;
@@ -95,37 +95,37 @@
         align-items: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
+
     .order-id {
         font-size: 1.1rem;
         color: #ff6b35;
         font-weight: bold;
     }
-    
+
     .order-date {
         color: #aaa;
         font-size: 0.9rem;
     }
-    
+
     .order-content {
         padding: 20px;
     }
-    
+
     .order-items {
         margin-bottom: 20px;
     }
-    
+
     .order-item {
         display: flex;
         align-items: center;
         padding: 10px 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-    
+
     .order-item:last-child {
         border-bottom: none;
     }
-    
+
     .item-image {
         width: 60px;
         height: 60px;
@@ -136,28 +136,28 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .item-image img {
         max-width: 80%;
         max-height: 80%;
         object-fit: contain;
     }
-    
+
     .item-details {
         flex: 1;
     }
-    
+
     .item-name {
         font-size: 1rem;
         color: #fff;
         margin-bottom: 5px;
     }
-    
+
     .item-price {
         font-size: 0.9rem;
         color: #ff6b35;
     }
-    
+
     .order-info {
         display: flex;
         justify-content: space-between;
@@ -165,11 +165,12 @@
         padding: 15px;
         border-radius: 8px;
     }
-    
-    .order-address, .order-summary {
+
+    .order-address,
+    .order-summary {
         flex: 1;
     }
-    
+
     .info-title {
         font-size: 0.9rem;
         color: #aaa;
@@ -177,33 +178,33 @@
         display: flex;
         align-items: center;
     }
-    
+
     .info-title i {
         margin-right: 8px;
         color: #ff6b35;
     }
-    
+
     .address-text {
         color: #ddd;
         font-size: 0.9rem;
         line-height: 1.5;
     }
-    
+
     .price-row {
         display: flex;
         justify-content: space-between;
         margin-bottom: 5px;
         font-size: 0.9rem;
     }
-    
+
     .price-row .label {
         color: #aaa;
     }
-    
+
     .price-row .value {
         color: #ddd;
     }
-    
+
     .total-row {
         display: flex;
         justify-content: space-between;
@@ -212,15 +213,15 @@
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         font-weight: bold;
     }
-    
+
     .total-row .label {
         color: #fff;
     }
-    
+
     .total-row .value {
         color: #ff6b35;
     }
-    
+
     .order-status {
         display: inline-block;
         padding: 5px 12px;
@@ -229,20 +230,83 @@
         font-weight: bold;
         margin-left: 10px;
     }
-    
+
     .status-delivered {
         background: rgba(46, 204, 113, 0.2);
         color: #2ecc71;
     }
-    
+
     .status-processing {
         background: rgba(52, 152, 219, 0.2);
         color: #3498db;
     }
-    
+
     .status-shipped {
         background: rgba(155, 89, 182, 0.2);
         color: #9b59b6;
+    }
+
+    .order-card.delivered {
+        border-left: 8px solid #3498db;
+    }
+
+    .order-card.cancelled {
+        border-left: 8px solid #e74c3c;
+    }
+
+    .order-card.processing {
+        border-left: 8px solid #ff6b35;
+    }
+
+    .order-status.status-cancelled {
+        background: rgba(231, 76, 60, 0.2);
+        color: #e74c3c;
+    }
+
+    .review-btn {
+        display: inline-block;
+        margin-top: 15px;
+        background: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .review-btn:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
+    }
+
+    .order-header {
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: #292929;
+        /* default */
+        transition: 0.3s;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .order-card.delivered .order-header {
+        background-color: rgba(52, 152, 219, 0.15);
+        /* Blue for Delivered */
+    }
+
+    .order-card.cancelled .order-header {
+        background-color: rgba(231, 76, 60, 0.15);
+        /* Red for Cancelled */
+    }
+
+    .order-card.processing .order-header {
+        background-color: rgba(255, 107, 53, 0.15);
+        /* Orange for Pending/Processing */
     }
 </style>
 
@@ -251,7 +315,7 @@
         <h1>My Orders</h1>
         <p>Track and manage all your delicious chip deliveries</p>
     </div>
-    
+
     {% if not orders or orders|length == 0 %}
     <div class="no-orders">
         <i class="fas fa-shopping-bag"></i>
@@ -260,23 +324,30 @@
         <a href="{{ url_for('products') }}">Browse Products</a>
     </div>
     {% else %}
-    
-    {% for order in orders %}
-    <div class="order-card">
+
+    {% for order in orders[::-1] %}
+    <div class="order-card 
+        {% if order.status|lower == 'delivered' %}delivered
+        {% elif order.status|lower == 'cancelled' %}cancelled
+        {% else %}processing
+        {% endif %}
+    ">
         <div class="order-header">
-            <div class="order-id">Order #{{ order.id }}</div>
+            <div class="order-id">Order</div>
             <div class="order-date">
                 {{ order.timestamp|default('', true) }}
                 {% if order.status|lower == 'delivered' %}
                 <span class="order-status status-delivered">Delivered</span>
                 {% elif order.status|lower == 'shipped' %}
                 <span class="order-status status-shipped">Shipped</span>
+                {% elif order.status|lower == 'cancelled' %}
+                <span class="order-status status-cancelled">Cancelled</span>
                 {% else %}
                 <span class="order-status status-processing">{{ order.status }}</span>
                 {% endif %}
             </div>
         </div>
-        
+
         <div class="order-content">
             <div class="order-items">
                 <div class="order-item">
@@ -289,7 +360,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="order-info">
                 <div class="order-address">
                     <div class="info-title">
@@ -300,7 +371,7 @@
                         Contact: {{ order.contact }}
                     </div>
                 </div>
-                
+
                 <div class="order-summary">
                     <div class="info-title">
                         <i class="fas fa-receipt"></i> Order Summary
@@ -319,11 +390,15 @@
                     </div>
                 </div>
             </div>
+
+            {% if order.status|lower == 'delivered' %}
+            <div style="text-align: right;">
+                <a href="/product/review/{{ order.id }}" class="review-btn">View Details & Review</a>
+            </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
-    
     {% endif %}
 </div>
 {% endblock content %}
-

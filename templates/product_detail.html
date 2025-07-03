@@ -236,6 +236,55 @@
         text-decoration: none;
         /* Ensure no underline appears on hover */
     }
+
+    .reviews-section {
+        max-width: 900px;
+        margin: 3rem auto 2rem auto;
+    }
+
+    .reviews-section h2 {
+        color: #ffa500;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .review-card {
+        flex: 1 1 260px;
+        min-width: 260px;
+        background: rgba(34, 34, 34, 0.98);
+        border-radius: 12px;
+        padding: 1.2rem 1rem;
+        border: 1.5px solid #ff6b35;
+        box-shadow: 0 2px 12px rgba(255, 107, 53, 0.08);
+        margin-bottom: 1rem;
+    }
+
+    .review-card div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0.5rem;
+    }
+
+    .review-card span {
+        font-size: 1.1rem;
+        color: #ffb300;
+    }
+
+    .review-card span.rating {
+        color: #f7931e;
+    }
+
+    .review-card span.user {
+        color: #bbb;
+        font-size: 0.97rem;
+    }
+
+    .review-card div.content {
+        color: #fff;
+        font-size: 1.05rem;
+    }
 </style>
 
 <div class="product-container">
@@ -245,7 +294,16 @@
     <div class="product-info">
         <h1 class="product-title">{{ chipDet['name'] }}</h1>
         <h3 class="product-description">{{ chipDet['description'] }}</h3>
-        <div class="ratings">⭐⭐⭐⭐☆ 4.2 (10,000+ reviews)</div>
+        {% if reviews %}
+            {% set ns = namespace(total=0) %}
+            {% for review in reviews %}
+                {% set ns.total = ns.total + review['rating'] %}
+            {% endfor %}
+            {% set average_rating = ns.total / reviews|length %}
+        {% else %}
+            {% set average_rating = 0 %}
+        {% endif %}
+        <div class="ratings"> ⭐{{ average_rating|round(1) }} ({{ reviews|length }} reviews)</div>
         <p class="product-price">₹{{ chipDet['price'] - (chipDet['price'] * chipDet['discount'] / 100) }}
             {% if chipDet['discount'] > 0 %}
             <span class="old-price">₹{{ chipDet['price'] }}</span>
@@ -253,9 +311,9 @@
             {% endif %}
         </p>
         <ul class="offers">
-            <li>Bank Offer: 5% off with select credit cards</li>
-            <li>Extra ₹100 off on first purchase</li>
-            <li>Free shipping for members</li>
+            <li>Freshly packed and shipped within 24 hours</li>
+            <li>Limited Edition: Only few packs left in stock</li>
+            <li>₹40 delivery charge</li>
         </ul>
         <div class="buy-options">
             <a href="{{ url_for('add_to_cart', product_id=id) }}" class="btn add-cart-btn">
@@ -267,4 +325,21 @@
         </div>
     </div>
 </div>
+
+{% if reviews %}
+<div class="reviews-section" style="max-width: 900px; margin: 3rem auto 2rem auto;">
+    <h2 style="color:#ffa500; margin-bottom:1.5rem; font-size:1.5rem; font-weight:700;">Customer Reviews</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 18px;">
+        {% for review in reviews[:3] %}
+        <div class="review-card" style="flex:1 1 260px; min-width:260px; background:rgba(34,34,34,0.98); border-radius:12px; padding:1.2rem 1rem; border:1.5px solid #ff6b35; box-shadow:0 2px 12px rgba(255,107,53,0.08); margin-bottom: 1rem;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.5rem;">
+                <span style="font-size:1.1rem; color:#ffb300;"><i class="fas fa-star"></i> {{ review.rating }}/5</span>
+                <span style="color:#bbb; font-size:0.97rem;">by {% if review.user_email == session['email'] %}You{% else %}{{ review.user_email }}{% endif %}</span>
+            </div>
+            <div style="color:#fff; font-size:1.05rem;">{{ review.content }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 {% endblock content %}

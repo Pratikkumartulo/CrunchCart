@@ -1,0 +1,103 @@
+{% extends "adminbase.html" %}
+
+{% block content %}
+<style>
+    .message-container {
+        max-width: 1100px;
+        margin: 3rem auto;
+        padding: 20px;
+        background: rgba(30, 30, 30, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 12px 30px rgba(255, 107, 53, 0.15);
+        border: 1px solid rgba(255, 107, 53, 0.1);
+    }
+
+    .message-container h2 {
+        font-size: 2rem;
+        color: #ff6b35;
+        margin-bottom: 2rem;
+        text-align: center;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .message-list {
+        display: grid;
+        gap: 20px;
+    }
+
+    .message-card {
+        background: rgba(40, 40, 40, 0.9);
+        padding: 20px 25px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 107, 53, 0.1);
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.15);
+    }
+
+    .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        color: #ffa500;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .message-body {
+        color: #ddd;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+    }
+
+    .message-meta {
+        color: #888;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+        .message-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .message-meta {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="message-container">
+    <h2>📥 Contact Messages</h2>
+    {% if messages %}
+    <div class="message-list">
+        {% for msg in messages[::-1] %}
+        <div class="message-card">
+            <div class="message-header">
+                <span>{{ msg.name }} - {{ msg.email }}</span>
+                <span>{{ msg.subject }}</span>
+            </div>
+            <div class="message-body">
+                {{ msg.message }}
+            </div>
+            <div class="message-meta">
+                <span>Sent: {{ msg.timestamp }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color: #aaa; text-align: center;">No messages received yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
