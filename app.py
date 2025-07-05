@@ -320,7 +320,6 @@ def adminOrderDetail(order_id):
     form = OrderStatusForm()
     if form.validate_on_submit():
         changeOrderStatus(order_id, form.status.data)
-        flash("Order status updated successfully!", "success")
         return redirect(url_for("adminOrderDetail", order_id=order_id))
 
     return render_template("Orderdetails.html", title="Order Detail", order=order, form=form, item=item, review=review)
