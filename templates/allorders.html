@@ -21,8 +21,8 @@
             <tbody>
                 {% for order in orders[::-1] %}
                 <tr>
-                    <td><strong>#{{ order.id }}</strong></td>
-                    <td>
+                    <td data-label="Order ID"><strong>#{{ order.id }}</strong></td>
+                    <td data-label="Customer">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <div
                                 style="width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">
@@ -30,14 +30,14 @@
                             <span>{{ order.user_email }}</span>
                         </div>
                     </td>
-                    <td>
+                    <td data-label="Product id">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-pepper-hot" style="color: var(--primary-orange);"></i>
                             <span>{{ order.item_id }}</span>
                         </div>
                     </td>
-                    <td><strong style="color: var(--success);">₹{{ order.price }}</strong></td>
-                    <td>
+                    <td data-label="Amount"><strong style="color: var(--success);">₹{{ order.price }}</strong></td>
+                    <td data-label="Status">
                         <span class="status
                             {% if order.status == 'Delivered' %} 
                             delivered
@@ -49,7 +49,7 @@
                             <i class="fas fa-check-circle"></i> {{ order.status }}
                         </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                         <a href="{{url_for('adminOrderDetail', order_id=order.id)}}">
                             <button class="btn btn-secondary btn-sm">
                                 <i class="fas fa-eye"></i> View
@@ -79,6 +79,80 @@
         color: white;
         /* Green or your default */
         font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+        .table-container {
+            padding: 0;
+            background: none;
+            box-shadow: none;
+        }
+        table, thead, tbody, th, td, tr {
+            display: block;
+            width: 100%;
+        }
+        thead {
+            display: none;
+        }
+        tr {
+            margin-bottom: 1.2rem;
+            background: #232323;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 1rem 0.7rem;
+        }
+        td {
+            background: none;
+            color: #fff;
+            padding: 0.5rem 0;
+            border: none;
+            position: relative;
+            font-size: 1rem;
+        }
+        td:before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #ff6b35;
+            display: block;
+            margin-bottom: 0.2rem;
+            font-size: 0.97rem;
+        }
+        .btn, .btn-secondary, .btn-primary {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .section h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #ff6b35;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+    }
+
+    .section h3 i {
+        font-size: 1.5em;
+        background: #232323;
+        border-radius: 50%;
+        padding: 0.4em;
+        box-shadow: 0 2px 8px rgba(255,107,53,0.08);
+    }
+
+    @media (max-width: 600px) {
+        .section h3 {
+            font-size: 1.2rem;
+            gap: 0.4rem;
+            padding: 0.5rem 0.2rem;
+            margin-bottom: 1rem;
+        }
+        .section h3 i {
+            font-size: 1.1em;
+            padding: 0.25em;
+        }
     }
 </style>
 {% endblock content %}
